@@ -175,6 +175,9 @@ public:
         fader_.corTampa = tipo_ == Stem ? corGrupo : cor::tinta;
         repaint();
     }
+    // só o nome de baixo, ao trocar de língua (18/11/2026: "saída do app"
+    // ficava em português nas faixas depois de mudar para EN, ES ou FR)
+    void setNome(const juce::String& nome) { nome_ = nome; repaint(); }
     void setNiveis(float rms) {
         const float n = nivelDeRms(rms);
         medL_.setNivel(n);

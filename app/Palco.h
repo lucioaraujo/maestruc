@@ -590,7 +590,7 @@ private:
                                           : T("ao abrir: ainda não aceita peça nem seed");
             l->traduzir();
         }
-        for (auto* f : faixas_) f->traduzir();
+        for (auto* f : faixas_) { f->traduzir(); f->setNome(T("saída do app")); }
         fones_->traduzir();
         master_->traduzir();
         fones_->setTextos(T("FONES"), T("Retorno"), cor::tinta, true);
