@@ -1,0 +1,44 @@
+name: Deploy public site
+
+# The Maestruc page on GitHub Pages (https://lucioaraujo.github.io/maestruc/).
+# Copied from the Batruc workflow (lucioaraujo/batruc, which came from Trioio,
+# .github/workflows/deploy-site.yml, same author and licence) on 2026-11-18.
+# The pages are generated locally (website/gerar_paginas.py && website/seo.py)
+# and committed. Manual dispatch only until the first release is published;
+# then the push trigger below can be switched on (author's decision).
+on:
+  workflow_dispatch:
+  # push:
+  #   branches: [main]
+  #   paths:
+  #     - website/**
+  #     - .github/workflows/deploy-site.yml
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: github-pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: website
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

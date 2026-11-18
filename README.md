@@ -38,8 +38,11 @@ AGPL-3.0-or-later ([`LICENSE`](LICENSE))
 
 ## What it does not do (yet)
 
-- No packages yet: build from source (below). Windows and macOS are being
-  validated by the CI; Linux is where it is used today.
+- Packages for Linux (.deb, AppImage, .tar.gz), Windows (installer and .zip)
+  and macOS (.dmg) come with the first release; installation in
+  [`INSTALL.md`](INSTALL.md). Windows and macOS are built and tested by the CI
+  but have not yet been opened on real machines; Linux is where it is used
+  today.
 - Asking an instrument to change its own music ("in the music") does not exist
   yet; influences act on the sound.
 
@@ -113,9 +116,12 @@ AGPL-3.0-or-later ([`LICENSE`](LICENSE))
   versão nova de cada instrumento instalado, e só avisa.
 - Quatro línguas: português, inglês, espanhol, francês.
 
-**Ainda não:** não há pacotes: compile pelo código (acima). Windows e macOS
-estão sendo validados pela integração contínua; o uso hoje é no Linux. Pedir a
-um instrumento que mude a própria música ("na música") ainda não existe.
+**Pacotes:** Linux (.deb, AppImage, .tar.gz), Windows (instalador e .zip) e
+macOS (.dmg) saem com a primeira versão; instalação em [`INSTALL.md`](INSTALL.md).
+Windows e macOS são compilados e testados pela integração contínua, mas ainda
+não foram abertos em máquinas reais; o uso hoje é no Linux.
+
+**Ainda não:** pedir a um instrumento que mude a própria música ("na música").
 
 **Compilar:** CMake 3.22+, compilador C++17 e o JUCE 9.0.3 (não incluído); os
 comandos estão na seção em inglês. Abra o Maestruc primeiro: ele abre os
@@ -170,10 +176,14 @@ AGPL-3.0-or-later ([`LICENSE`](LICENSE))
   si chaque instrument installé a une nouvelle version, et prévient seulement.
 - Quatre langues : portugais, anglais, espagnol, français.
 
-**Pas encore :** pas de paquets : compilez depuis le code (commandes dans la
-section anglaise). Windows et macOS sont en cours de validation par
-l'intégration continue ; l'usage aujourd'hui est sous Linux. Demander à un
-instrument de changer sa propre musique (« dans la musique ») n'existe pas
+**Paquets :** Linux (.deb, AppImage, .tar.gz), Windows (installateur et .zip)
+et macOS (.dmg) arrivent avec la première version ; installation dans
+[`INSTALL.md`](INSTALL.md). Windows et macOS sont compilés et testés par
+l'intégration continue mais n'ont pas encore été ouverts sur de vraies
+machines ; l'usage aujourd'hui est sous Linux.
+
+**Pas encore :** demander à un instrument de changer sa propre musique
+(« dans la musique ») n'existe pas
 encore.
 
 **Pour qui fait des instruments :** le canal de contrôle est le protocole
@@ -223,10 +233,13 @@ AGPL-3.0-or-later ([`LICENSE`](LICENSE))
   versión nueva de cada instrumento instalado, y solo avisa.
 - Cuatro idiomas: portugués, inglés, español, francés.
 
-**Todavía no:** no hay paquetes: compile desde el código (comandos en la
-sección en inglés). Windows y macOS se están validando con la integración
-continua; el uso hoy es en Linux. Pedir a un instrumento que cambie su propia
-música («en la música») todavía no existe.
+**Paquetes:** Linux (.deb, AppImage, .tar.gz), Windows (instalador y .zip) y
+macOS (.dmg) salen con la primera versión; instalación en [`INSTALL.md`](INSTALL.md).
+Windows y macOS se compilan y prueban con la integración continua, pero todavía
+no se han abierto en máquinas reales; el uso hoy es en Linux.
+
+**Todavía no:** pedir a un instrumento que cambie su propia música («en la
+música»).
 
 **Para quien hace instrumentos:** el canal de control es el protocolo
 `maestruc.link/1` ([`PROTOCOLO_MAESTRUC_LINK.md`](PROTOCOLO_MAESTRUC_LINK.md),

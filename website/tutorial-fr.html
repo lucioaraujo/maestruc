@@ -1,0 +1,178 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="robots" content="noindex" />
+<title>Tutoriel — Maestruc</title>
+<meta name="description" content="Une première session dans Maestruc : installer les instruments, en ouvrir deux, mixer, créer une influence, diriger et enregistrer." />
+<link rel="icon" href="assets/maestruc-favicon.svg" type="image/svg+xml" />
+<link rel="stylesheet" href="styles.css" />
+<script src="assets/contact.js" defer></script>
+<!-- SEO:INICIO — gerado por seo.py; editar lá, não aqui -->
+<link rel="canonical" href="https://lucioaraujo.github.io/maestruc/tutorial-fr.html">
+<link rel="alternate" hreflang="pt-BR" href="https://lucioaraujo.github.io/maestruc/tutorial.html">
+<link rel="alternate" hreflang="en" href="https://lucioaraujo.github.io/maestruc/tutorial-en.html">
+<link rel="alternate" hreflang="fr" href="https://lucioaraujo.github.io/maestruc/tutorial-fr.html">
+<link rel="alternate" hreflang="es" href="https://lucioaraujo.github.io/maestruc/tutorial-es.html">
+<link rel="alternate" hreflang="x-default" href="https://lucioaraujo.github.io/maestruc/tutorial.html">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Maestruc">
+<meta property="og:title" content="Tutoriel — Maestruc">
+<meta property="og:description" content="Une première session dans Maestruc : installer les instruments, en ouvrir deux, mixer, créer une influence, diriger et enregistrer.">
+<meta property="og:url" content="https://lucioaraujo.github.io/maestruc/tutorial-fr.html">
+<meta property="og:image" content="https://lucioaraujo.github.io/maestruc/assets/og-maestruc.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Maestruc — le chef de la famille RASGO : des lignes qui se rejoignent en un point, les instruments qui arrivent au Master.">
+<meta property="og:locale" content="fr_FR">
+<meta property="og:locale:alternate" content="pt_BR">
+<meta property="og:locale:alternate" content="en_US">
+<meta property="og:locale:alternate" content="es_ES">
+<meta name="twitter:card" content="summary_large_image">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "Maestruc",
+  "description": "Une première session dans Maestruc : installer les instruments, en ouvrir deux, mixer, créer une influence, diriger et enregistrer.",
+  "url": "https://lucioaraujo.github.io/maestruc/",
+  "inLanguage": "fr",
+  "image": "https://lucioaraujo.github.io/maestruc/assets/og-maestruc.jpg",
+  "applicationCategory": "MultimediaApplication",
+  "applicationSubCategory": "Music performance and recording",
+  "operatingSystem": "Windows, macOS, Linux",
+  "downloadUrl": "https://github.com/lucioaraujo/maestruc/releases/tag/v0.1.0",
+  "softwareVersion": "0.1.0",
+  "license": "https://www.gnu.org/licenses/agpl-3.0.html",
+  "isAccessibleForFree": true,
+  "author": {
+    "@type": "Person",
+    "name": "Lúcio de Araújo"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "RASGO",
+    "url": "https://rasgoinstruments.arquiviagem.net/"
+  },
+  "sameAs": [
+    "https://github.com/lucioaraujo/maestruc"
+  ]
+}
+</script>
+<!-- SEO:FIM -->
+</head>
+<body>
+<div class="rasgo-strip"><a href="https://rasgoinstruments.arquiviagem.net/">RASGO — famille d'instruments et recherche sonore</a></div>
+<a class="skip-link" href="#conteudo">Aller au contenu</a>
+
+<div class="site-header">
+  <a class="brand" href="fr.html" aria-label="Maestruc">
+    <img src="assets/maestruc-favicon.svg" alt="" width="36" height="36" />
+    <span>MAESTRUC</span>
+  </a>
+  <div class="header-nav">
+    <nav class="page-nav" aria-label="Pages">
+      <a href="fr.html">À propos</a>
+      <a href="tutorial-fr.html" aria-current="page">Tutoriel</a>
+      <a href="aprender-fr.html">Apprendre</a>
+      <a href="instalacao-fr.html">Installation</a>
+    </nav>
+    <nav class="lang-switch" aria-label="Langue">
+      <a href="tutorial.html">PT</a>
+      <a href="tutorial-en.html">EN</a>
+      <a href="tutorial-fr.html" aria-current="true">FR</a>
+      <a href="tutorial-es.html">ES</a>
+    </nav>
+  </div>
+</div>
+
+<main id="conteudo">
+<section class="hero hero-inner" id="top">
+  <h1>Tutoriel</h1>
+  <p class="lead">Une première session, du début à la prise enregistrée. Les noms en capitales sont ceux de l'interface.</p>
+</section>
+<section class="section lessons">
+  <article class="lesson">
+    <h2>1. Les instruments</h2>
+    <p>Maestruc ouvre les instruments RASGO déjà présents sur l'ordinateur ; il n'en installe aucun lui-même.</p>
+    <ul>
+      <li>Installez au moins deux instruments, chacun depuis son site (Batruc et Aquorbium forment un bon premier duo).</li>
+      <li>Dans la colonne APPS, un instrument absent apparaît comme NON INSTALLÉ ; COMMENT INSTALLER ouvre sa page officielle.</li>
+    </ul>
+  </article>
+  <article class="lesson">
+    <h2>2. Ouvrir</h2>
+    <p>Dans APPS, OUVRIR Batruc et Aquorbium.</p>
+    <ul>
+      <li>Chacun s'ouvre dans sa propre fenêtre, et son son arrive désormais dans Maestruc, sur une tranche de SORTIES ET STEMS.</li>
+      <li>Un instrument déjà ouvert apparaît comme DEHORS ; BRANCHER le fait entrer dans Maestruc.</li>
+      <li>Quand Maestruc se ferme, le son revient aux enceintes et les instruments restent ouverts.</li>
+    </ul>
+  </article>
+  <article class="lesson">
+    <h2>3. Mixer</h2>
+    <p>Chaque tranche a un niveau, muet (M), solo (S) et une destination.</p>
+    <ul>
+      <li>Glissez le niveau ; double clic revient à 0 dB ; Maj donne le réglage fin.</li>
+      <li>La destination choisit où va la tranche : mix, mix + casque, casque ou aucune.</li>
+      <li>Master et Casque choisissent l'appareil de sortie : par exemple l'interface audio pour les enceintes et la carte de l'ordinateur pour le casque.</li>
+    </ul>
+  </article>
+  <article class="lesson">
+    <h2>4. Une influence</h2>
+    <p>Dans la matrice, la ligne est qui influence et la colonne qui est influencé.</p>
+    <ul>
+      <li>Choisissez la case Batruc → Aquorbium, ce qui change (niveau), la quantité (−0,6) et la douceur.</li>
+      <li>+ NOUVELLE INFLUENCE : quand Batruc joue, Aquorbium laisse de la place ; quand Batruc se tait, Aquorbium revient.</li>
+      <li>La dernière colonne est le Master, le mix entier.</li>
+    </ul>
+  </article>
+  <article class="lesson">
+    <h2>5. Diriger</h2>
+    <p>Dans DIRECTION, chaque instrument a une graine et une pièce.</p>
+    <ul>
+      <li>Ouvert par Maestruc, l'instrument démarre avec elles.</li>
+      <li>Instrument ouvert, ENVOYER LA GRAINE la change aussitôt, dans les instruments qui l'acceptent.</li>
+      <li>TOUT JOUER et ARRÊTER valent pour tous ceux qui l'acceptent.</li>
+    </ul>
+  </article>
+  <article class="lesson">
+    <h2>6. Enregistrer</h2>
+    <p>Cochez les tranches voulues et cliquez sur ENREGISTRER ; cliquez de nouveau pour arrêter.</p>
+    <ul>
+      <li>Chaque prise devient un dossier : Musique/RASGO/Maestruc/recordings/&lt;jour&gt;/take-01-&lt;heure&gt;/.</li>
+      <li>Dedans : master.wav, une tranche par instrument (WAV 24 bits), log.json avec ce qui s'est passé et master-streaming.wav, la version de livraison pour le streaming.</li>
+      <li>Le bouton … à côté du dossier choisit un autre endroit. Le casque n'est pas enregistré.</li>
+    </ul>
+  </article>
+</section>
+<section class="section section-dark">
+  <h2>Règle centrale</h2>
+  <p>Influencer n'est pas contrôler. Maestruc demande ; chaque instrument interprète à sa façon et continue de jouer seul si Maestruc se ferme.</p>
+</section>
+<section class="section">
+  <div class="contact-row">
+    <button type="button" class="button button-primary" data-contact-trigger>Contact</button>
+    <a class="button" href="https://github.com/lucioaraujo/maestruc">GitHub</a>
+  </div>
+</section>
+</main>
+
+<footer class="site-footer">
+  <span>© Lúcio de Araújo · Maestruc 2026 · RASGO</span>
+  <nav>
+    <a href="https://github.com/lucioaraujo/maestruc">GitHub</a> ·
+    <a href="https://github.com/lucioaraujo/maestruc/blob/main/LICENSE">Licence AGPLv3+</a>
+  </nav>
+</footer>
+<dialog class="contact-dialog" data-contact-dialog aria-labelledby="contact-title">
+  <button class="dialog-close" type="button" data-contact-close aria-label="Fermer la fenêtre de contact">×</button>
+  <h2 id="contact-title">CONTACT</h2>
+  <p>Copiez l'adresse e-mail :</p>
+  <code data-contact-address></code>
+  <button class="button button-primary" type="button" data-contact-copy>Copier l'e-mail</button>
+  <p class="contact-feedback" data-contact-feedback data-copied="E-mail copié." data-fallback="Sélectionnez et copiez l&#x27;adresse ci-dessus." aria-live="polite"></p>
+</dialog>
+</body>
+</html>

@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024">
+<!-- Maestruc — ícone: oito linhas (os instrumentos) que se juntam no ponto (o Master).
+     Conceito A (convergência), fundo creme da variação 3, ponto no vermelho do app (R4);
+     escolha do autor, 18/11/2026. Copyright (c) 2026 Lúcio de Araújo — AGPL-3.0-or-later. -->
+<rect width="1024" height="1024" rx="220" fill="#F4EFE6"/><path d="M 170 212 C 440 212, 540 512, 790 512" fill="none" stroke="#1D6670" stroke-width="40" stroke-linecap="round"/><path d="M 170 332 C 440 332, 540 512, 790 512" fill="none" stroke="#1D6670" stroke-width="40" stroke-linecap="round"/><path d="M 170 452 C 440 452, 540 512, 790 512" fill="none" stroke="#1D6670" stroke-width="40" stroke-linecap="round"/><path d="M 170 572 C 440 572, 540 512, 790 512" fill="none" stroke="#1D6670" stroke-width="40" stroke-linecap="round"/><path d="M 170 692 C 440 692, 540 512, 790 512" fill="none" stroke="#1D6670" stroke-width="40" stroke-linecap="round"/><path d="M 170 812 C 440 812, 540 512, 790 512" fill="none" stroke="#1D6670" stroke-width="40" stroke-linecap="round"/><circle cx="790" cy="512" r="96" fill="#B3362B"/></svg>
