@@ -30,6 +30,7 @@
   #include <libproc.h>
   #include <mach/mach.h>
   #include <mach/mach_time.h>
+  #include <sys/proc.h>        // SZOMB
   #include <sys/proc_info.h>
  #endif
 #endif
