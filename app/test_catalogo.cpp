@@ -9,6 +9,10 @@
 
 #include <cstdio>
 #include <cstdlib>
+#if JUCE_LINUX
+ #include <fcntl.h>
+ #include <unistd.h>
+#endif
 
 namespace {
 int falhas = 0;
@@ -152,6 +156,27 @@ int main() {
         conferir("processos: o app aberto recebe o ambiente do catálogo",
                  fim && saida.loadFileAsString().contains("ENSAIO_MAESTRUC=1") && saida.loadFileAsString().contains("PATH="));
         saida.deleteFile();
+#if JUCE_LINUX
+        // o filho não herda descritores (18/11/2026): um arquivo aberto aqui,
+        // sem O_CLOEXEC, não pode aparecer na lista do filho
+        const int herdavel = ::open("/dev/null", O_RDONLY);
+        EntradaCatalogo fds;
+        fds.nome = "ensaio-fds";
+        fds.programa = juce::File("/bin/sh");
+        fds.argsFixos = { "-c", "ls /proc/$$/fd" };
+        Processo pf;
+        pf.lancador = abrirApp(fds, {}, erroAbrir);
+        bool fimF = false;
+        for (int i = 0; i < 60 && !fimF; ++i) { fimF = lancadorSaiu(pf.lancador); if (!fimF) juce::Thread::sleep(50); }
+        ::close(herdavel);
+        const auto listaF = pastaLogs().getChildFile("ensaio-fds.log");
+        juce::StringArray vistos;
+        vistos.addTokens(listaF.loadFileAsString(), true);
+        vistos.removeEmptyStrings();
+        conferir("processos: o app aberto não herda arquivos nem sockets do Maestruc",
+                 fimF && herdavel > 2 && vistos.contains("0") && !vistos.contains(juce::String(herdavel)));
+        listaF.deleteFile();
+#endif
         EntradaCatalogo nada;
         nada.nome = "ausente";
         conferir("processos: um app não instalado não abre, e diz por quê", abrirApp(nada, {}, erroAbrir) == 0 && erroAbrir.isNotEmpty());

@@ -25,6 +25,9 @@
  #include <spawn.h>
  #include <sys/wait.h>
  #include <unistd.h>
+ #include <cstdlib>
+ #include <dirent.h>
+ #include <vector>
  extern char** environ;
  #if JUCE_MAC
   #include <libproc.h>
@@ -205,6 +208,28 @@ juce::String versaoDoExecutavel(const juce::File& exe) {
 
 #else // Linux e macOS
 
+#if JUCE_LINUX
+// Fecha no filho todo descritor a partir do 3. Com a glibc 2.34+ (o pacote é
+// feito no Ubuntu 22.04, glibc 2.35) há o closefrom das ações do spawn; antes
+// disso, a lista de /proc/self/fd.
+static void fecharHerdados(posix_spawn_file_actions_t& fa) {
+   #if defined(__GLIBC__) && (__GLIBC__ > 2 || (__GLIBC__ == 2 && __GLIBC_MINOR__ >= 34))
+    posix_spawn_file_actions_addclosefrom_np(&fa, 3);
+   #else
+    std::vector<int> fds;
+    if (DIR* d = opendir("/proc/self/fd")) {
+        const int proprio = dirfd(d);
+        while (auto* ent = readdir(d)) {
+            const int fd = std::atoi(ent->d_name);
+            if (fd > 2 && fd != proprio) fds.push_back(fd);
+        }
+        closedir(d);
+    }
+    for (int fd : fds) posix_spawn_file_actions_addclose(&fa, fd);
+   #endif
+}
+#endif
+
 juce::int64 abrirApp(const EntradaCatalogo& e, const juce::StringArray& extras, juce::String& erro) {
     const auto exe = e.programa;
     if (!exe.existsAsFile()) { erro = u8("não instalado"); return 0; }
@@ -229,12 +254,21 @@ juce::int64 abrirApp(const EntradaCatalogo& e, const juce::StringArray& extras, 
     posix_spawn_file_actions_adddup2(&fa, 1, 2);
    #if JUCE_LINUX
     posix_spawn_file_actions_addchdir_np(&fa, exe.getParentDirectory().getFullPathName().toRawUTF8());
+    // O filho não herda nada além de 0, 1 e 2 (18/11/2026): herdava o socket
+    // do canal (porta 47900), e um instrumento aberto segurava a porta depois
+    // que o Maestruc fechava; o Maestruc seguinte ficava surdo.
+    fecharHerdados(fa);
    #endif
     posix_spawnattr_t at;
     posix_spawnattr_init(&at);
+    short flags = 0;
    #ifdef POSIX_SPAWN_SETSID
-    posix_spawnattr_setflags(&at, POSIX_SPAWN_SETSID);
+    flags |= POSIX_SPAWN_SETSID;
    #endif
+   #ifdef POSIX_SPAWN_CLOEXEC_DEFAULT
+    flags |= POSIX_SPAWN_CLOEXEC_DEFAULT;   // macOS: o mesmo, pelo sistema
+   #endif
+    posix_spawnattr_setflags(&at, flags);
     // Ambiente: o do Maestruc mais as variáveis do catálogo (substituem).
     std::vector<std::string> ambStore;
     for (char** p = environ; p != nullptr && *p != nullptr; ++p) {
