@@ -33,6 +33,7 @@ void Mixer::prepare(double sampleRate, int maxBlock, int numStrips, int activeSt
     numStrips_.store(activeStrips < 0 ? preparedStrips_ : std::min(activeStrips, preparedStrips_), std::memory_order_release);
     scratch_.assign(static_cast<std::size_t>(maxBlock) * 2, 0.0f);
     envelope_.fill(0.0f);
+    energyRef_.fill(0.0f);
     infGainDb_.fill(0.0f);
     infBright_.fill(0.0f);
     lpState_.fill(0.0f);
@@ -81,6 +82,13 @@ void Mixer::process(const float* const* in, float* masterL, float* masterR,
     const float silenceDown = blockCoeff(20.0f, frames, sampleRate_);
     const float quiet = dbToGain(-48.0f);
     const float rel = blockCoeff(250.0f, frames, sampleRate_);
+    // Energia relativa (decisão do autor, 18/11/2026): na escala absoluta
+    // ("cheio" = -6 dBFS RMS) as faixas reais da família (-18 a -33 dBFS RMS)
+    // mal passavam de 10% e as influências agiam 1-2 dB. Agora a energia é a
+    // envoltória dividida pelo pico recente dela mesma (solta em ~10 s), com
+    // um piso de -54 dBFS RMS para o ruído de um stem calado não virar "cheio".
+    const float refFall = std::exp(-static_cast<float>(frames) / (10.0f * sr));
+    const float energyFloor = 2.0f * dbToGain(-54.0f);
     std::array<bool, kMaxStrips> audible {};
     for (int s = 0; s < ns; ++s) {
         auto& p = strips_[static_cast<std::size_t>(s)];
@@ -129,8 +137,11 @@ void Mixer::process(const float* const* in, float* masterL, float* masterR,
         ear.silence += (wantSilence > ear.silence ? silenceUp : silenceDown) * (wantSilence - ear.silence);
         if (onsets > 0)
             onsetCount_[static_cast<std::size_t>(s)].fetch_add(static_cast<std::uint32_t>(onsets), std::memory_order_relaxed);
+        float& ref = energyRef_[static_cast<std::size_t>(s)];
+        ref = std::max(e, ref * refFall);
+        const float energy = on ? clampf(e / std::max(ref, energyFloor), 0.0f, 1.0f) : 0.0f;
         auto* out = &listened_[static_cast<std::size_t>(s) * kNumListen];
-        out[0].store(e, std::memory_order_relaxed);
+        out[0].store(energy, std::memory_order_relaxed);
         out[1].store(ear.pulse, std::memory_order_relaxed);
         out[2].store(clampf(ear.density / 2.0f / 8.0f, 0.0f, 1.0f), std::memory_order_relaxed);
         out[3].store(ear.silence, std::memory_order_relaxed);

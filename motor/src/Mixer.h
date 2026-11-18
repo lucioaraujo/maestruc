@@ -121,6 +121,9 @@ private:
 
     // Estado da thread de áudio.
     std::array<float, kMaxStrips> envelope_ {};
+    // Escuta relativa da energia (18/11/2026): a referência de cada stem é o
+    // pico recente da própria envoltória, que solta em ~10 s.
+    std::array<float, kMaxStrips> energyRef_ {};
     // Escuta: detector de ataques por amostra e o que sai dele.
     struct Ear {
         float prev = 0.0f;      // amostra anterior (derivada = realça o golpe)

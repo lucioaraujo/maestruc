@@ -297,6 +297,26 @@ void testDucking() {
     check(std::fabs(db(rm.stripRms[1][10]) - before) < 0.5, "fonte muda não influencia");
 }
 
+// Energia relativa (18/11/2026): uma fonte a -30 dBFS abre espaço quase como
+// uma a -6 dBFS (antes, a fraca agia ~25 vezes menos).
+void testRelativeEnergy() {
+    const std::vector<double> f { 110.0, 440.0 };
+    double queda[2] {};
+    const double amps[2] { 0.045, 0.7 };   // ~ -30 e ~ -6 dBFS de pico
+    for (int k = 0; k < 2; ++k) {
+        const double a0 = amps[k];
+        auto amp = [a0](int s, double t) { return s == 1 ? 0.2 : (t >= 1.0 && t < 3.0 ? a0 : 0.0); };
+        Mixer m; m.prepare(kSr, kBlock, 2);
+        auto& inf = m.influence(0);
+        inf.source = 0; inf.dest = 1; inf.target = static_cast<int>(Target::Ganho);
+        inf.amount = -0.6f; inf.timeMs = 300.0f; inf.active = true;
+        auto r = run(m, 2, 5.0, 0.25, amp, f);
+        queda[k] = db(r.stripRms[1][3]) - db(r.stripRms[1][10]);
+    }
+    std::printf("      quantidade -0,6: fonte a -30 dBFS abaixa %.1f dB, a -6 dBFS abaixa %.1f dB\n", queda[0], queda[1]);
+    check(queda[0] > 8.0 && std::fabs(queda[0] - queda[1]) < 2.0, "energia relativa: fonte fraca e forte abrem espaço parecido");
+}
+
 void testBrightness() {
     const std::vector<double> f { 110.0, 9000.0 };
     auto amp = [](int s, double t) { return s == 1 ? 0.2 : (t >= 1.0 ? 0.5 : 0.0); };
@@ -470,6 +490,7 @@ int main() {
     testGainMuteSoloRoute();
     testFonesEMaster();
     testDucking();
+    testRelativeEnergy();
     testBrightness();
     testEscuta();
     testRecorderAndWav();
