@@ -8,14 +8,14 @@ commit b285505); só a configuração abaixo é do Maestruc (18/11/2026).
 SITE = {
     "base": "https://lucioaraujo.github.io/maestruc/",
     "nome": "Maestruc",
-    # 1200×630, feita do ícone (assets/og-maestruc.jpg); trocar por uma
-    # derivada da captura da janela quando ela existir
+    # 1200×630, derivada de assets/interface.jpg (captura da janela do app
+    # instalado, com Batruc, Aquorbium e Rasgo Modular tocando, 18/11/2026)
     "imagem": "assets/og-maestruc.jpg",
     "imagem_alt": {
-        "pt-BR": "Maestruc — o regente da família RASGO: linhas que se juntam num ponto, os instrumentos chegando ao Master.",
-        "en": "Maestruc — the conductor of the RASGO family: lines meeting at one point, the instruments reaching the Master.",
-        "fr": "Maestruc — le chef de la famille RASGO : des lignes qui se rejoignent en un point, les instruments qui arrivent au Master.",
-        "es": "Maestruc — el director de la familia RASGO: líneas que se juntan en un punto, los instrumentos llegando al Master.",
+        "pt-BR": "Maestruc tocando Batruc, Aquorbium e Rasgo Modular: os cartões dos apps, as faixas de saída com o Master e a matriz de influências.",
+        "en": "Maestruc playing Batruc, Aquorbium and Rasgo Modular: the app cards, the output strips with the Master and the influence matrix.",
+        "fr": "Maestruc jouant Batruc, Aquorbium et Rasgo Modular : les cartes des apps, les tranches de sortie avec le Master et la matrice d'influences.",
+        "es": "Maestruc tocando Batruc, Aquorbium y Rasgo Modular: las tarjetas de las apps, las tiras de salida con el Master y la matriz de influencias.",
     },
     "raiz_do_dominio": False,
 }
