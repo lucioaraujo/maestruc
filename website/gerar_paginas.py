@@ -185,7 +185,7 @@ INICIO = 2.2   # segundos: os pulsos começam depois que as linhas chegam
 
 
 def motivo(lang):
-    """A imagem grande do topo: a logo R4 inteira, animada."""
+    """A imagem grande do topo: a logo R4 animada, sem o contorno (autor, 18/11)."""
     svg = (AQUI / "assets" / "maestruc-logo.svg").read_text(encoding="utf-8")
     linhas = re.findall(r'<path d="([^"]+)"[^>]*opacity="([^"]+)"/>', svg)
     if len(linhas) != len(DURACOES):
@@ -201,7 +201,6 @@ def motivo(lang):
                       'repeatCount="indefinite"/></circle>' % (dur, ini, k, dur, ini))
     return ('<svg class="logo-grande logo-animada" viewBox="0 0 1024 1024" role="img" aria-label="%s">\n'
             '<rect x="32" y="32" width="960" height="960" rx="200" fill="#F2EDE3"/>\n'
-            '<rect x="32" y="32" width="960" height="960" rx="200" fill="none" stroke="#D9D0C0" stroke-width="8"/>\n'
             '%s\n<g class="pulsos">%s</g>\n'
             '<circle class="onda" cx="760" cy="512" r="58" fill="none" stroke="#B3362B" stroke-width="6" opacity="0">'
             '<animate attributeName="r" values="58;104" dur="2.4s" begin="%gs" repeatCount="indefinite"/>'
