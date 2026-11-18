@@ -17,7 +17,7 @@ que deveria funcionar.
 
 | Plataforma | Build | Testes | Abertura | Áudio tocado | Pacote |
 |---|---|---|---|---|---|
-| Linux x86-64 | ✅ local e CI (Ubuntu 22.04) | ✅ local e CI | ⏳ local e CI (Debian 12, Ubuntu 24.04, Fedora, Arch) na primeira rodada | ✅ em hardware real (código-fonte) | `.deb`, AppImage, `.tar.gz` |
+| Linux x86-64 | ✅ local e CI (Ubuntu 22.04) | ✅ local e CI | ✅ CI em Debian 12, Ubuntu 24.04, Fedora e Arch (18/11) | ✅ em hardware real (código-fonte) | `.deb`, AppImage, `.tar.gz` |
 | Windows x86-64 | ✅ CI (MSVC) | ✅ CI | ❌ nunca aberto num Windows real | ❌ | instalador `.exe` (NSIS) e `.zip` |
 | macOS (Universal 2) | ✅ CI | ✅ CI | ❌ nunca aberto num Mac real | ❌ | `.dmg` (assinatura ad-hoc) |
 
