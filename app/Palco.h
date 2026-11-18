@@ -285,7 +285,11 @@ public:
             auto it = influencias_.find({ l, c });
             return it != influencias_.end() && it->second.ativa ? it->second.quantidade : 0.0f;
         };
-        matriz_.onEscolha = [this](int, int) { mostrarInfluencia(); };
+        matriz_.onEscolha = [this](int, int) {
+            // o aviso "Escolha uma casa da matriz." já foi atendido (18/11/2026)
+            if (aviso_ == T("Escolha uma casa da matriz.")) avisar({});
+            mostrarInfluencia();
+        };
         addAndMakeVisible(alvo_);
         alvo_.onChange = [this] { aplicarInfluencia(); repaint(painelInf_); };
         addAndMakeVisible(escuta_);
