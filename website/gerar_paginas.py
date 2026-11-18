@@ -15,7 +15,7 @@ Imagem grande do topo: a logo R4 inteira (assets/maestruc-logo.svg), animada
 
 PUBLICADO = False enquanto não houver release: a página diz "em preparação",
 leva noindex e não mostra a seção Baixar (links quebrados não vão ao ar).
-A captura da janela (assets/interface.jpg) entra quando existir.
+Captura da janela: assets/interface.jpg, o app em inglês, em todas as línguas.
 """
 
 import html
@@ -39,7 +39,8 @@ PACOTES = [
     ("Linux", [("maestruc-%s-linux-x86_64.deb" % VERSAO, "deb"), ("maestruc-%s-linux-x86_64.AppImage" % VERSAO, "AppImage"),
                ("maestruc-%s-linux-x86_64.tar.gz" % VERSAO, "tar.gz")]),
 ]
-CAPTURA = AQUI / "assets" / "interface.jpg"
+# captura da janela: a do app em inglês, em todas as línguas (autor, 18/11/2026)
+CAPTURA = {lang: "assets/interface.jpg" for lang in ("pt-BR", "en", "fr", "es")}
 
 PAGINAS = [("index.html", "pt-BR", "PT"), ("en.html", "en", "EN"), ("fr.html", "fr", "FR"), ("es.html", "es", "ES")]
 SUFIXO = {"pt-BR": "", "en": "-en", "fr": "-fr", "es": "-es"}
@@ -235,11 +236,11 @@ def corpo_sobre(lang):
 <section class="section">
   <h2>{e(t["s_shot"])}</h2>
   <figure class="shot">
-    <img src="assets/interface.jpg" alt="{a(t["shot_alt"])}" width="1920" height="1006" loading="lazy" />
+    <img src="{CAPTURA[lang]}" alt="{a(t["shot_alt"])}" width="1920" height="1006" loading="lazy" />
     <figcaption>{e(t["shot_cap"])}</figcaption>
   </figure>
 </section>
-""" if CAPTURA.exists() else ""
+""" if (AQUI / CAPTURA[lang]).exists() else ""
     pill = (t["pill_pub"] if PUBLICADO else t["pill_prep"]) % VERSAO
     estado = t["state_pub"] % VERSAO if PUBLICADO else t["state_prep"]
     return f"""<section class="hero hero-b" id="top">
@@ -381,7 +382,7 @@ def main():
                                   ("instalacao", INSTALACAO[lang], corpo_instalacao(lang))):
             (AQUI / arquivo_de(tipo, lang)).write_text(documento(lang, meta["title"], meta["desc"], tipo, corpo), encoding="utf-8")
         n += 4
-    print("gerar_paginas.py: %d páginas (PUBLICADO=%s, captura=%s)" % (n, PUBLICADO, CAPTURA.exists()))
+    print("gerar_paginas.py: %d páginas (PUBLICADO=%s, capturas=%s)" % (n, PUBLICADO, sorted(set(CAPTURA.values()))))
 
 
 if __name__ == "__main__":
