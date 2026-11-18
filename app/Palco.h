@@ -1139,8 +1139,12 @@ private:
         int eventos = 0;
         for (auto& e : orq_.registro()) if (e.tipo == "event" || e.tipo == "obs") ++eventos;
         g.setFont(letra::mono(12.0f));
-        g.drawFittedText(juce::String(eventos) + " " + T("acontecimentos") + u8(" \xc2\xb7 ") + juce::String(orq_.comandosEnviados()) + " "
-                             + T("comandos") + u8(" \xc2\xb7 ") + juce::String(contarInfluencias()) + " " + T("influências"),
+        // singular e plural (18/11/2026: "1 influências")
+        const auto conta = [](int n, const char* um, const char* varios) { return juce::String(n) + " " + T(n == 1 ? um : varios); };
+        const int nInf = contarInfluencias();
+        const int nCmd = static_cast<int>(orq_.comandosEnviados());
+        g.drawFittedText(conta(static_cast<int>(eventos), "acontecimento", "acontecimentos") + u8(" \xc2\xb7 ")
+                             + conta(nCmd, "comando", "comandos") + u8(" \xc2\xb7 ") + conta(nInf, "influência", "influências"),
                          r, juce::Justification::centredLeft, 1, 0.8f);
     }
 
