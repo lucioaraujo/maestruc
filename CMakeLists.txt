@@ -28,6 +28,9 @@ juce_add_binary_data(maestruc_dados NAMESPACE DadosMaestruc HEADER_NAME DadosMae
 
 juce_add_gui_app(MaestrucApp
     PRODUCT_NAME "Maestruc"
+    # ícone (escolha do autor, 18/11/2026): o JUCE gera o .ico e o .icns
+    ICON_BIG "${CMAKE_CURRENT_SOURCE_DIR}/assets/identidade/maestruc-1024.png"
+    ICON_SMALL "${CMAKE_CURRENT_SOURCE_DIR}/assets/identidade/maestruc-256.png"
     COMPANY_NAME "RASGO"
     VERSION ${PROJECT_VERSION})
 
