@@ -124,7 +124,7 @@ figure.shot figcaption { margin-top: .6rem; color: var(--muted); font: .78rem/1.
 
 /* o motivo do ícone no topo: as linhas (os instrumentos) que se juntam no Master */
 .hero-b { display: grid; grid-template-columns: minmax(0, 1fr) minmax(220px, 420px); gap: clamp(1.5rem, 5vw, 4rem); align-items: center; }
-.hero-b svg { width: 100%; height: auto; }
+.hero-b .logo-grande { display: block; width: 100%; height: auto; }
 .dl-links { display: flex; flex-wrap: wrap; gap: .5rem; margin-top: .8rem; }
 code { font-family: "DejaVu Sans Mono", monospace; font-size: .9em; }
-@media (max-width: 760px) { .hero-b { grid-template-columns: 1fr; } .hero-b svg { max-width: 280px; } }
+@media (max-width: 760px) { .hero-b { grid-template-columns: 1fr; } .hero-b .logo-grande { max-width: 280px; } }

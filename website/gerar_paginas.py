@@ -10,6 +10,9 @@ Editar os TEXTOS em textos_paginas.py, não nos .html (eles são derivados).
 O Aprender vem do app: lido de ../app/Textos.h (textoAprender), para o site
 e a janela dizerem a mesma coisa.
 
+Imagem grande do topo: assets/maestruc-logo.svg, a logo R4 inteira (autor,
+18/11/2026). Cabeçalho e aba do navegador: o favicon simplificado.
+
 PUBLICADO = False enquanto não houver release: a página diz "em preparação",
 leva noindex e não mostra a seção Baixar (links quebrados não vão ao ar).
 A captura da janela (assets/interface.jpg) entra quando existir.
@@ -173,10 +176,9 @@ def documento(lang, titulo, descricao, atual, corpo):
 
 # ---- Sobre ------------------------------------------------------------------
 def motivo(lang):
-    """O desenho do ícone, sem o fundo: as linhas que se juntam no Master."""
-    svg = (AQUI / "assets" / "maestruc-favicon.svg").read_text(encoding="utf-8")
-    partes = "".join(re.findall(r"<path[^>]*/>", svg)) + re.search(r"<circle[^>]*/>", svg).group(0)
-    return '<svg viewBox="120 160 820 704" role="img" aria-label="%s">%s</svg>' % (a(T[lang]["motivo"]), partes)
+    """A imagem grande do topo: a logo R4 inteira, com o fundo e a borda
+    (escolha do autor para o site, 18/11/2026)."""
+    return '<img class="logo-grande" src="assets/maestruc-logo.svg" alt="%s" width="420" height="420" />' % a(T[lang]["motivo"])
 
 
 def corpo_sobre(lang):
