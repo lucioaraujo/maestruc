@@ -1,0 +1,6 @@
+.local-build/
+build/
+__pycache__/
+*.pyc
+JUCE/
+JUCE-checkout/

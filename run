@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+# Maestruc — abre a janela. Compile antes:
+#   cmake -S . -B .local-build/app -DCMAKE_BUILD_TYPE=Release
+#   cmake --build .local-build/app --target MaestrucApp --parallel 2
+set -euo pipefail
+project_dir="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
+app="$project_dir/.local-build/app/MaestrucApp_artefacts/Release/Maestruc"
+if [[ ! -x "$app" ]]; then
+    printf 'Maestruc ainda não está compilado. Compile com:\n  cmake -S "%s" -B "%s/.local-build/app" -DCMAKE_BUILD_TYPE=Release\n  cmake --build "%s/.local-build/app" --target MaestrucApp --parallel 2\n' \
+        "$project_dir" "$project_dir" "$project_dir" >&2
+    exit 1
+fi
+# do código-fonte: os instrumentos das pastas de desenvolvimento (18/11/2026);
+# MAESTRUC_FONTE=instalados abre os instalados no sistema
+export MAESTRUC_FONTE="${MAESTRUC_FONTE:-desenvolvimento}"
+exec "$app" "$@"

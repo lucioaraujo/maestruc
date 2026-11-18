@@ -1,0 +1,125 @@
+{
+  "formato": "maestruc.catalogo/1",
+  "nota": "Catálogo dos instrumentos da família RASGO que o Maestruc abre. Embutido no Maestruc; um catalogo.json na pasta de dados do Maestruc acrescenta instrumentos ou substitui entradas pelo id. Onde cada pacote oficial instala o programa foi conferido nos pacotes publicados (18/11/2026): .deb (dpkg-deb -c), zip do Windows e PRODUCT_NAME do bundle do macOS.",
+  "instrumentos": [
+    {
+      "id": "batruc", "nome": "Batruc", "grupo": "B",
+      "repositorio": "lucioaraujo/batruc",
+      "pagina": "https://lucioaraujo.github.io/batruc/",
+      "args": ["--maestruc"], "abertura": "batruc",
+      "nota": "seed, peça, tocar/parar, tempo, REC",
+      "padraoSom": "Batruc",
+      "instalado": {
+        "linux": { "programa": "/usr/bin/batruc", "pacote": "batruc" },
+        "windows": { "pasta": "Batruc", "programa": "Batruc.exe" },
+        "macos": { "app": "Batruc.app" }
+      },
+      "desenvolvimento": { "comando": "BATRUC/run", "processo": "Release/Batruc" }
+    },
+    {
+      "id": "aquorbium", "nome": "Aquorbium", "grupo": "B",
+      "repositorio": "lucioaraujo/aquorbium",
+      "pagina": "https://lucioaraujo.github.io/aquorbium/",
+      "args": ["--maestruc"], "abertura": "seed",
+      "nota": "tocar/pausa; seed ao abrir",
+      "padraoSom": "Aquorbium",
+      "instalado": {
+        "linux": { "programa": "/usr/bin/aquorbium", "pacote": "aquorbium" },
+        "windows": { "pasta": "Aquorbium", "programa": "Aquorbium.exe" },
+        "macos": { "app": "Aquorbium.app" }
+      },
+      "desenvolvimento": { "comando": "AQUORBIUM/run", "processo": "Release/Aquorbium" }
+    },
+    {
+      "id": "rasgo-modular", "nome": "Rasgo Modular", "grupo": "A",
+      "repositorio": "lucioaraujo/rasgo-modular",
+      "pagina": "https://lucioaraujo.github.io/rasgo-modular/",
+      "args": ["--maestruc"], "abertura": "modular",
+      "nota": "seed (também aberto), tocar/repouso",
+      "padraoSom": "Modular",
+      "instalado": {
+        "linux": { "programa": "/usr/bin/rasgo-modular", "pacote": "rasgo-modular" },
+        "windows": { "pasta": "Rasgo Modular", "programa": "Rasgo Modular.exe" },
+        "macos": { "app": "Rasgo Modular.app" }
+      },
+      "desenvolvimento": { "comando": "RASGO_MODULAR/run", "args": ["--fg", "--maestruc"], "processo": "Release/Rasgo Modular" }
+    },
+    {
+      "id": "risco", "nome": "Risco", "grupo": "B",
+      "args": [], "abertura": "",
+      "nota": "só o som (receptor ainda não instalado)",
+      "padraoSom": "Risco",
+      "desenvolvimento": { "comando": "RISCO/run", "processo": "Release/Risco" }
+    },
+    {
+      "id": "navalha2", "nome": "Navalha 2", "grupo": "A",
+      "repositorio": "lucioaraujo/navalha2-juce",
+      "pagina": "https://navalha2.arquiviagem.net/",
+      "args": ["--maestruc"], "abertura": "navalha",
+      "nota": "tocar/parar, BPM, abrir projeto; LEVEL/MUTE/SOLO só de quem toca",
+      "padraoSom": "Navalha",
+      "instalado": {
+        "linux": { "programa": "/usr/bin/Navalha 2", "pacote": "navalha2" },
+        "windows": { "pasta": "Navalha 2", "programa": "Navalha 2.exe" },
+        "macos": { "app": "Navalha 2.app" }
+      },
+      "desenvolvimento": { "comando": "NAVALHA2_JUCE/run_navalha.sh", "processo": "Navalha2Juce_artefacts" }
+    },
+    {
+      "id": "rasgo-synth-asterismus", "nome": "Asterismus", "grupo": "B",
+      "repositorio": "lucioaraujo/rasgo-synth-asterismus",
+      "pagina": "https://lucioaraujo.github.io/rasgo-synth-asterismus/",
+      "args": ["--maestruc"], "abertura": "seed",
+      "nota": "seed (também aberto), tocar/parar, tempo",
+      "padraoSom": "Asterismus",
+      "instalado": {
+        "linux": { "programa": "/usr/bin/rasgo-synth-asterismus", "pacote": "rasgo-synth-asterismus" },
+        "windows": { "pasta": "Rasgo Synth Asterismus", "programa": "Rasgo Synth Asterismus.exe" },
+        "macos": { "app": "Rasgo Synth Asterismus.app" }
+      },
+      "desenvolvimento": { "comando": "RASGO_SYNTH_ASTERISMUS/run_asterismus.sh", "processo": "Release/Rasgo Synth Asterismus" }
+    },
+    {
+      "id": "antitotem", "nome": "Antitotem", "grupo": "A",
+      "repositorio": "lucioaraujo/antitotem",
+      "pagina": "https://lucioaraujo.github.io/antitotem/",
+      "args": ["--maestruc"], "abertura": "seed",
+      "nota": "tocar/parar; seed ao abrir",
+      "padraoSom": "Antitotem",
+      "instalado": {
+        "linux": { "programa": "/usr/bin/antitotem", "pacote": "antitotem" },
+        "windows": { "pasta": "Antitotem", "programa": "Antitotem - Objeto Sonoro.exe" },
+        "macos": { "app": "Antitotem - Objeto Sonoro.app" }
+      },
+      "desenvolvimento": { "comando": "ANTITOTEM/run_antitotem.sh", "processo": "Antitotem - Objeto Sonoro" }
+    },
+    {
+      "id": "trioio", "nome": "Trioio", "grupo": "C",
+      "repositorio": "lucioaraujo/trioio",
+      "pagina": "https://lucioaraujo.github.io/trioio/",
+      "args": ["--maestruc"], "abertura": "",
+      "nota": "tocar/parar a resposta escolhida",
+      "padraoSom": "Trioio",
+      "instalado": {
+        "linux": { "programa": "/usr/bin/trioio", "pacote": "trioio" },
+        "windows": { "pasta": "Trioio", "programa": "Trioio.exe" },
+        "macos": { "app": "Trioio.app" }
+      },
+      "desenvolvimento": { "comando": "TRIOIO/.local-build/app/trioio_app_artefacts/Release/Trioio", "processo": "Release/Trioio" }
+    },
+    {
+      "id": "rasgo-synth-studio", "nome": "Studio", "grupo": "C",
+      "repositorio": "lucioaraujo/rasgo-synth-studio",
+      "pagina": "https://lucioaraujo.github.io/rasgo-synth-studio/",
+      "args": ["--maestruc"], "abertura": "seed",
+      "nota": "seed e tempo da próxima peça, tocar/parar a peça gerada",
+      "padraoSom": "rasgo-synth-studio",
+      "instalado": {
+        "linux": { "programa": "/usr/bin/rasgo-synth-studio", "pacote": "rasgo-synth-studio" },
+        "windows": { "pasta": "Rasgo Synth Studio", "programa": "Rasgo Synth Studio.exe" },
+        "macos": { "app": "Rasgo Synth Studio.app" }
+      },
+      "desenvolvimento": { "comando": "RASGO_SYNTH_STUDIO/.local-build/maestruc-20261115/RasgoSynthStudio_artefacts/Release/rasgo-synth-studio", "processo": "rasgo-synth-studio" }
+    }
+  ]
+}
