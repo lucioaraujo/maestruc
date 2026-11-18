@@ -1212,6 +1212,24 @@ private:
         for (auto& s : host_.stems()) stems.add(juce::String(s));
         raiz->setProperty("stems", stems);
         raiz->setProperty("apps", apps);
+        // As influências ativas no fim do take (18/11/2026): o take fica
+        // verificável (antes não dizia quais estavam ligadas).
+        juce::Array<juce::var> infs;
+        const char* escutas[] = { "energia", "ataques", "densidade", "silencio" };
+        for (auto& [k, inf] : influencias_) {
+            if (!inf.ativa) continue;
+            const auto [l, c] = k;
+            auto* o = new juce::DynamicObject();
+            o->setProperty("fonte", juce::isPositiveAndBelow(l, matriz_.nomes.size()) ? matriz_.nomes[l] : juce::String(l));
+            o->setProperty("destino", c == Matriz::kColunaMaster ? juce::String("Master")
+                                      : juce::isPositiveAndBelow(c, matriz_.nomes.size()) ? matriz_.nomes[c] : juce::String(c));
+            o->setProperty("escuta", escutas[juce::jlimit(0, 3, inf.escuta)]);
+            o->setProperty("muda", inf.alvo == 1 ? "filtro" : "nivel");
+            o->setProperty("quantidade", inf.quantidade);
+            o->setProperty("suavidade_ms", inf.ms);
+            infs.add(juce::var(o));
+        }
+        raiz->setProperty("influencias", infs);
         raiz->setProperty("registro", itens);
         pastaTake_.getChildFile("log.json").replaceWithText(juce::JSON::toString(juce::var(raiz)));
     }
