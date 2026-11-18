@@ -10,8 +10,8 @@ Editar os TEXTOS em textos_paginas.py, não nos .html (eles são derivados).
 O Aprender vem do app: lido de ../app/Textos.h (textoAprender), para o site
 e a janela dizerem a mesma coisa.
 
-Imagem grande do topo: assets/maestruc-logo.svg, a logo R4 inteira (autor,
-18/11/2026). Cabeçalho e aba do navegador: o favicon simplificado.
+Imagem grande do topo: a logo R4 inteira (assets/maestruc-logo.svg), animada
+(autor, 18/11/2026). Cabeçalho e aba do navegador: o favicon simplificado.
 
 PUBLICADO = False enquanto não houver release: a página diz "em preparação",
 leva noindex e não mostra a seção Baixar (links quebrados não vão ao ar).
@@ -175,10 +175,39 @@ def documento(lang, titulo, descricao, atual, corpo):
 
 
 # ---- Sobre ------------------------------------------------------------------
+# Animação do topo (proposta aprovada pelo autor, 18/11/2026): as oito linhas
+# da logo R4 se desenham, o Master surge, e depois pulsos correm por cada linha
+# até ele, cada um no seu tempo, e o Master solta uma onda leve. Só SVG (SMIL e
+# CSS), sem canvas; com prefers-reduced-motion, a logo fica parada.
+DURACOES = [3.1, 2.6, 3.6, 2.9, 3.3, 2.7, 3.8, 3.0]
+ATRASOS = [0.0, 1.3, 0.6, 2.1, 0.9, 1.8, 0.3, 2.5]
+INICIO = 2.2   # segundos: os pulsos começam depois que as linhas chegam
+
+
 def motivo(lang):
-    """A imagem grande do topo: a logo R4 inteira, com o fundo e a borda
-    (escolha do autor para o site, 18/11/2026)."""
-    return '<img class="logo-grande" src="assets/maestruc-logo.svg" alt="%s" width="420" height="420" />' % a(T[lang]["motivo"])
+    """A imagem grande do topo: a logo R4 inteira, animada."""
+    svg = (AQUI / "assets" / "maestruc-logo.svg").read_text(encoding="utf-8")
+    linhas = re.findall(r'<path d="([^"]+)"[^>]*opacity="([^"]+)"/>', svg)
+    if len(linhas) != len(DURACOES):
+        raise SystemExit("maestruc-logo.svg: esperava %d linhas, achei %d" % (len(DURACOES), len(linhas)))
+    tracos, pulsos = [], []
+    for k, (d, op) in enumerate(linhas):
+        tracos.append('<path id="l%d" class="linha" style="--i:%d" d="%s" fill="none" stroke="#1D6670" '
+                      'stroke-width="22" stroke-linecap="round" opacity="%s" pathLength="1"/>' % (k, k, d, op))
+        dur, ini = DURACOES[k], INICIO + ATRASOS[k]
+        pulsos.append('<circle r="13" fill="#1D6670" opacity="0"><animateMotion dur="%gs" begin="%gs" repeatCount="indefinite" '
+                      'keyPoints="0;1" keyTimes="0;1" calcMode="spline" keySplines="0.4 0 0.9 0.6"><mpath href="#l%d"/></animateMotion>'
+                      '<animate attributeName="opacity" values="0;.85;.85;0" keyTimes="0;.15;.85;1" dur="%gs" begin="%gs" '
+                      'repeatCount="indefinite"/></circle>' % (dur, ini, k, dur, ini))
+    return ('<svg class="logo-grande logo-animada" viewBox="0 0 1024 1024" role="img" aria-label="%s">\n'
+            '<rect x="32" y="32" width="960" height="960" rx="200" fill="#F2EDE3"/>\n'
+            '<rect x="32" y="32" width="960" height="960" rx="200" fill="none" stroke="#D9D0C0" stroke-width="8"/>\n'
+            '%s\n<g class="pulsos">%s</g>\n'
+            '<circle class="onda" cx="760" cy="512" r="58" fill="none" stroke="#B3362B" stroke-width="6" opacity="0">'
+            '<animate attributeName="r" values="58;104" dur="2.4s" begin="%gs" repeatCount="indefinite"/>'
+            '<animate attributeName="opacity" values=".45;0" dur="2.4s" begin="%gs" repeatCount="indefinite"/></circle>\n'
+            '<circle class="master" cx="760" cy="512" r="58" fill="#B3362B"/>\n</svg>'
+            % (a(T[lang]["motivo"]), "\n".join(tracos), "".join(pulsos), INICIO, INICIO))
 
 
 def corpo_sobre(lang):
