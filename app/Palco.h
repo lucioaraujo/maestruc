@@ -27,6 +27,7 @@ struct AppVivo {
     bool pediuLigar = false;  // aberto fora, ligado por LIGAR
     bool ligado = false;      // som passando pelo Maestruc
     int stem = -1;
+    juce::String ponteLigada; // caminho da ponte que o motor está lendo
     double abertoEm = 0.0;
     int corIdx = 0;
 };
@@ -709,6 +710,7 @@ private:
             if (a.proc.pid <= 0) {
                 if (agora() - a.abertoEm > 20.0) a.nosso = false;
                 if (host_.hasBridge(slug(a.e.nome))) host_.detachBridge(slug(a.e.nome));
+                a.ponteLigada = {};
                 a.ligado = false;
                 a.pediuLigar = false;
                 continue;
@@ -718,6 +720,15 @@ private:
             // preferência sobre a porta JACK e é o único caminho no modo
             // portátil. Por ora só a mistura vira stem (os canais internos
             // esperam o desenho das subfaixas).
+            // O app trocou de ponte (18/11/2026): o Navalha 2 reabre a ponte
+            // quando a placa dele termina de iniciar, com caminho novo. O motor
+            // seguia preso à primeira, abandonada: lia silêncio, nunca pedia
+            // para o app calar, e o som ia direto às caixas.
+            if (const auto* inst = orq_.porNome(a.e.nome);
+                inst && host_.hasBridge(slug(a.e.nome)) && inst->ponte != a.ponteLigada) {
+                host_.detachBridge(slug(a.e.nome));
+                a.ponteLigada = {};
+            }
             if (const auto* inst = orq_.porNome(a.e.nome);
                 inst && inst->ponte.isNotEmpty() && (a.nosso || a.pediuLigar || a.ligado) && host_.running()
                 && !host_.hasBridge(slug(a.e.nome))) {
@@ -727,6 +738,7 @@ private:
                     if (stems[0] != a.stem) mudouStems = true;
                     a.stem = stems[0];
                     a.ligado = true;
+                    a.ponteLigada = inst->ponte;
                 } else {
                     avisar(a.e.nome + ": " + juce::String(err));
                 }
