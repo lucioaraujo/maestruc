@@ -118,12 +118,14 @@ public:
 
     Palco() {
         setLookAndFeel(&visual_);
-        juce::PropertiesFile::Options o;
-        o.applicationName = "Maestruc";
-        o.filenameSuffix = ".settings";
-        o.folderName = "RASGO";
-        o.storageFormat = juce::PropertiesFile::storeAsXML;
-        prefs_ = std::make_unique<juce::PropertiesFile>(o);
+        // Preferências pela convenção de pastas da família (18/11/2026):
+        // <dados>/RASGO/Maestruc/Maestruc.settings. O arquivo de antes (o
+        // padrão do JUCE: ~/RASGO/Maestruc.settings no Linux) é copiado uma vez.
+        juce::PropertiesFile::Options antes;
+        antes.applicationName = "Maestruc";
+        antes.filenameSuffix = ".settings";
+        antes.folderName = "RASGO";
+        prefs_ = rasgo::folders::openSettings("Maestruc", antes.getDefaultFile());
         linguaAtual() = static_cast<Lingua>(juce::jlimit(0, 3, prefs_->getIntValue("lingua", 0)));
 
         // Motor e canal. No Linux com PipeWire/JACK, o host JACK (pega também
@@ -309,14 +311,13 @@ public:
         desligarInf_.onClick = [this] { ligarInfluencia(false); };
         novaInf_.onClick = [this] { ligarInfluencia(true); };
 
-        // Gravação: Música/Maestruc do usuário (o botão … escolhe outra). Até
-        // 18/11/2026 havia aqui o caminho do disco do autor; nesta máquina,
-        // ~/Music/Maestruc é um link para esse disco, como nos outros
-        // instrumentos (RASGO/AGENTS.md §8).
+        // Gravação: Music/RASGO/Maestruc/recordings, pela convenção de pastas
+        // da família (18/11/2026); o botão … escolhe outra, e a escolha fica
+        // nas preferências. Cada take: <pasta>/YYYY-MM-DD/take-NN-HHMMSS.
         addAndMakeVisible(pasta_);
         pasta_.setFont(letra::mono(12.0f));
         pasta_.setIndents(10, 9);
-        const auto padrao = juce::File::getSpecialLocation(juce::File::userMusicDirectory).getChildFile("Maestruc");
+        const auto padrao = rasgo::folders::material("Maestruc").getChildFile("recordings");
         pasta_.setText(prefs_->getValue("pasta_gravacao", padrao.getFullPathName()), juce::dontSendNotification);
         pasta_.onTextChange = [this] { prefs_->setValue("pasta_gravacao", pasta_.getText().trim()); };
         addAndMakeVisible(escolherPasta_);
@@ -1129,7 +1130,9 @@ private:
         const auto texto = pasta_.getText().trim();
         if (!juce::File::isAbsolutePath(texto)) { avisar(T("A pasta precisa ser um caminho completo.")); return; }
         ++take_;
-        pastaTake_ = juce::File(texto).getChildFile("take-" + juce::String(take_).paddedLeft('0', 2) + "-" + juce::Time::getCurrentTime().formatted("%Y%m%d-%H%M%S"));
+        const auto agoraTake = juce::Time::getCurrentTime();
+        pastaTake_ = juce::File(texto).getChildFile(agoraTake.formatted("%Y-%m-%d"))
+                         .getChildFile("take-" + juce::String(take_).paddedLeft('0', 2) + "-" + agoraTake.formatted("%H%M%S"));
         std::vector<bool> on;
         for (auto* t : pistas_) on.push_back(t->getToggleState());
         std::string err;
@@ -1174,7 +1177,7 @@ private:
         raiz->setProperty("stems", stems);
         raiz->setProperty("apps", apps);
         raiz->setProperty("registro", itens);
-        pastaTake_.getChildFile("registro.json").replaceWithText(juce::JSON::toString(juce::var(raiz)));
+        pastaTake_.getChildFile("log.json").replaceWithText(juce::JSON::toString(juce::var(raiz)));
     }
 
     // ——— Influências ———

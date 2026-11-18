@@ -445,10 +445,10 @@ void testVersaoEntrega() {
         check(w.close(), "entrega: master.wav fecha");
     }
     std::string resumo;
-    check(escreverVersaoDeEntrega((dir / "master.wav").string(), resumo), "entrega: master_streaming.wav escrito");
+    check(escreverVersaoDeEntrega((dir / "master.wav").string(), resumo), "entrega: master-streaming.wav escrito");
     WavData out;
     std::string err;
-    check(readWav((dir / "master_streaming.wav").string(), out, err), "entrega: master_streaming.wav legível");
+    check(readWav((dir / "master-streaming.wav").string(), out, err), "entrega: master-streaming.wav legível");
     saida::TakeAnalysis medida;
     medida.prepare(kSr);
     for (std::size_t i = 0; i < out.left.size(); ++i) {
@@ -461,7 +461,7 @@ void testVersaoEntrega() {
     check(std::fabs(m.integratedLufs + 14.0f) <= 0.5f, "entrega: -14 LUFS (+-0,5)");
     check(m.truePeakDb <= -0.95f, "entrega: true peak <= -1 dBTP");
     check(out.left.size() == static_cast<std::size_t>(frames), "entrega: mesma duração");
-    check(fs::exists(dir / "master_streaming.txt"), "entrega: relatório .txt ao lado");
+    check(fs::exists(dir / "master-streaming.txt"), "entrega: relatório .txt ao lado");
     fs::remove_all(dir);
 }
 

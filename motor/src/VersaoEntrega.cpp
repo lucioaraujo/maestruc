@@ -72,7 +72,7 @@ bool escreverVersaoDeEntrega(const std::string& masterWav, std::string& resumo) 
     LeitorPcm24 leitor(masterWav);
     if (!leitor.aberto()) { resumo = "master.wav ilegível"; return false; }
     const fs::path origem(masterWav);
-    const fs::path destino = origem.parent_path() / (origem.stem().string() + "_streaming.wav");
+    const fs::path destino = origem.parent_path() / (origem.stem().string() + "-streaming.wav");
     EscritorWav escritor;
     if (!escritor.w.open(destino.string(), leitor.taxa())) { resumo = "não abriu " + destino.string(); return false; }
     const auto rel = saida::DeliveryMaster::process(leitor, static_cast<double>(leitor.taxa()), escritor);

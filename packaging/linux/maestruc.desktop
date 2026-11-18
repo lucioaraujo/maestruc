@@ -1,0 +1,10 @@
+[Desktop Entry]
+Type=Application
+Name=Maestruc
+GenericName=RASGO Conductor
+Comment=O regente da família RASGO — abre, mistura e grava os instrumentos
+Exec=maestruc
+Icon=maestruc
+StartupWMClass=Maestruc
+Terminal=false
+Categories=AudioVideo;Audio;Music;

@@ -1,6 +1,6 @@
 {
   "formato": "maestruc.catalogo/1",
-  "nota": "Catálogo dos instrumentos da família RASGO que o Maestruc abre. Embutido no Maestruc; um catalogo.json na pasta de dados do Maestruc acrescenta instrumentos ou substitui entradas pelo id. Onde cada pacote oficial instala o programa foi conferido nos pacotes publicados (18/11/2026): .deb (dpkg-deb -c), zip do Windows e PRODUCT_NAME do bundle do macOS.",
+  "nota": "Catálogo dos instrumentos da família RASGO que o Maestruc abre. Embutido no Maestruc; um catalog.json na pasta de dados do Maestruc (RASGO/Maestruc) acrescenta instrumentos ou substitui entradas pelo id. Onde cada pacote oficial instala o programa foi conferido nos pacotes publicados (18/11/2026): .deb (dpkg-deb -c), zip do Windows e PRODUCT_NAME do bundle do macOS.",
   "instrumentos": [
     {
       "id": "batruc", "nome": "Batruc", "grupo": "B",

@@ -7,6 +7,7 @@
 
 #include <juce_core/juce_core.h>
 #include <DadosMaestruc.h>
+#include "RasgoFolders.h"
 
 namespace maestruc {
 
@@ -62,9 +63,13 @@ inline juce::StringArray textos(const juce::var& lista) {
 }
 
 // O catálogo do usuário, se houver: acrescenta instrumentos ou substitui pelo id.
+// Convenção de pastas da família (18/11/2026): <dados>/RASGO/Maestruc/catalog.json;
+// o catalogo.json do lugar de antes é copiado uma vez.
 inline juce::File arquivoDoUsuario() {
-    return juce::File::getSpecialLocation(juce::File::userApplicationDataDirectory)
-        .getChildFile("RASGO").getChildFile("Maestruc").getChildFile("catalogo.json");
+    const auto f = rasgo::folders::appData("Maestruc").getChildFile("catalog.json");
+    rasgo::folders::migrateFileOnce(f, juce::File::getSpecialLocation(juce::File::userApplicationDataDirectory)
+        .getChildFile("RASGO").getChildFile("Maestruc").getChildFile("catalogo.json"));
+    return f;
 }
 
 // Versão de um pacote .deb pelo registro do dpkg (sem abrir processo).

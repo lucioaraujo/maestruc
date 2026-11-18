@@ -142,7 +142,7 @@ private:
     std::unique_ptr<Recorder> recorderOwner_;
     std::uint64_t lastDropped_ = 0;
     // versão de entrega do Master (16/11/2026, VersaoEntrega.h): a pasta da
-    // gravação, se o master foi gravado, e o fio que escreve master_streaming.wav
+    // gravação, se o master foi gravado, e o fio que escreve master-streaming.wav
     std::string recDir_;
     bool recMaster_ = false;
     std::thread entrega_;

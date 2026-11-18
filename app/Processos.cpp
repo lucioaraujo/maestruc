@@ -189,7 +189,7 @@ juce::int64 abrirApp(const EntradaCatalogo& e, const juce::StringArray& extras, 
     if (!exe.existsAsFile()) { erro = u8("não instalado"); return 0; }
     const auto logs = pastaLogs();
     logs.createDirectory();
-    const auto log = logs.getChildFile(juce::File::createLegalFileName(e.nome) + ".log");
+    const auto log = logs.getChildFile(nomeDoLog(e));
 
     juce::StringArray args;
     args.add(exe.getFullPathName());

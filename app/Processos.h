@@ -47,13 +47,15 @@ double memoriaLivreGb();
 // usuário (até 18/11/2026 ficava no código-fonte, que não existe numa
 // instalação).
 inline juce::File pastaLogs() {
-    return juce::File::getSpecialLocation(juce::File::userApplicationDataDirectory)
-        .getChildFile("RASGO").getChildFile("Maestruc").getChildFile("logs");
+    return rasgo::folders::appData("Maestruc").getChildFile("logs");   // convenção, 18/11/2026
 }
+
+// Nome do log de um app: sem espaços nem acentos ("rasgo-modular.log").
+inline juce::String nomeDoLog(const EntradaCatalogo& e) { return rasgo::folders::safeName(e.nome, "app") + ".log"; }
 
 // Se o script do app está compilando, o último "[ NN%]" do log dele (ou vazio).
 inline juce::String progressoCompilacao(const EntradaCatalogo& e) {
-    const auto log = pastaLogs().getChildFile(juce::File::createLegalFileName(e.nome) + ".log");
+    const auto log = pastaLogs().getChildFile(nomeDoLog(e));
     juce::FileInputStream in(log);
     if (!in.openedOk()) return {};
     const auto tam = in.getTotalLength();
