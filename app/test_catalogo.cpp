@@ -101,6 +101,20 @@ int main() {
     const auto lido = lerGuardado(guardar(1234567, m), quando);
     conferir("guardado: volta a data e só o que é válido", quando == 1234567 && lido.size() == 1 && lido.count("lucioaraujo/trioio") == 1);
 
+    // Ambiente no catálogo (18/11/2026): só nomes *_MAESTRUC; o Modular o usa.
+    {
+        const auto json = juce::JSON::parse(R"({"RASGO_MAESTRUC":"1","LD_PRELOAD":"x","_MAESTRUC":"1","A_MAESTRUC":2})");
+        const auto amb = detalhe::ambiente(json);
+        conferir("ambiente: aceita só *_MAESTRUC com valor texto", amb.size() == 1 && amb["RASGO_MAESTRUC"] == "1");
+        juce::String avisoAmb;
+        bool modular = false;
+        for (auto& e : carregarCatalogo(Fonte::Instalados, avisoAmb))
+            if (e.id == "rasgo-modular") modular = e.ambiente["RASGO_MAESTRUC"] == "1";
+        auto todos = carregarCatalogo(Fonte::Desenvolvimento, avisoAmb);
+        for (auto& e : todos) if (e.id == "rasgo-modular") modular = modular || e.ambiente["RASGO_MAESTRUC"] == "1";
+        conferir("ambiente: o Rasgo Modular abre com RASGO_MAESTRUC=1", modular);
+    }
+
     // Processos (18/11/2026, agora com uma implementação por sistema): abrir
     // desprendido, achar pelo executável, medir, fechar com pedido gentil.
 #if ! JUCE_WINDOWS
@@ -125,6 +139,19 @@ int main() {
         for (int i = 0; i < 50 && !saiu; ++i) { saiu = lancadorSaiu(p.lancador); if (!saiu) juce::Thread::sleep(50); }
         conferir("processos: fecha com SIGTERM e não fica zumbi", saiu && !processoVivo(p.pid));
         pastaLogs().getChildFile("ensaio-sleep.log").deleteFile();   // o ensaio não deixa rastro
+        // ambiente do catálogo (18/11/2026): o filho recebe a variável
+        EntradaCatalogo amb;
+        amb.nome = "ensaio-ambiente";
+        amb.programa = juce::File(juce::File("/usr/bin/env").existsAsFile() ? "/usr/bin/env" : "/bin/env");
+        amb.ambiente.set("ENSAIO_MAESTRUC", "1");
+        Processo pa;
+        pa.lancador = abrirApp(amb, {}, erroAbrir);
+        bool fim = false;
+        for (int i = 0; i < 60 && !fim; ++i) { fim = lancadorSaiu(pa.lancador); if (!fim) juce::Thread::sleep(50); }
+        const auto saida = pastaLogs().getChildFile("ensaio-ambiente.log");
+        conferir("processos: o app aberto recebe o ambiente do catálogo",
+                 fim && saida.loadFileAsString().contains("ENSAIO_MAESTRUC=1") && saida.loadFileAsString().contains("PATH="));
+        saida.deleteFile();
         EntradaCatalogo nada;
         nada.nome = "ausente";
         conferir("processos: um app não instalado não abre, e diz por quê", abrirApp(nada, {}, erroAbrir) == 0 && erroAbrir.isNotEmpty());

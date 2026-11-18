@@ -102,12 +102,33 @@ juce::int64 abrirApp(const EntradaCatalogo& e, const juce::StringArray& extras, 
     for (auto& a : extras) linha += L" " + citar(a);
     std::vector<wchar_t> mutavel(linha.begin(), linha.end());
     mutavel.push_back(0);
+    // Ambiente: o do Maestruc mais as variáveis do catálogo (bloco Unicode).
+    std::vector<wchar_t> bloco;
+    if (e.ambiente.size() > 0) {
+        if (auto* atual = GetEnvironmentStringsW()) {
+            for (auto* p = atual; *p != 0; p += wcslen(p) + 1) {
+                const std::wstring item(p);
+                bool trocada = false;
+                for (auto& k : e.ambiente.getAllKeys())
+                    if (_wcsnicmp(item.c_str(), (larga(k) + L"=").c_str(), static_cast<size_t>(k.length() + 1)) == 0) trocada = true;
+                if (!trocada) bloco.insert(bloco.end(), item.begin(), item.end() + 1);
+            }
+            FreeEnvironmentStringsW(atual);
+        }
+        for (auto& k : e.ambiente.getAllKeys()) {
+            const auto item = larga(k + "=" + e.ambiente[k]);
+            bloco.insert(bloco.end(), item.begin(), item.end());
+            bloco.push_back(0);
+        }
+        bloco.push_back(0);
+    }
     STARTUPINFOW si {};
     si.cb = sizeof(si);
     PROCESS_INFORMATION pi {};
     const auto pasta = larga(exe.getParentDirectory().getFullPathName());
     if (!CreateProcessW(larga(exe.getFullPathName()).c_str(), mutavel.data(), nullptr, nullptr, FALSE,
-                        CREATE_NEW_PROCESS_GROUP | DETACHED_PROCESS, nullptr, pasta.c_str(), &si, &pi)) {
+                        CREATE_NEW_PROCESS_GROUP | DETACHED_PROCESS | CREATE_UNICODE_ENVIRONMENT,
+                        bloco.empty() ? nullptr : bloco.data(), pasta.c_str(), &si, &pi)) {
         erro = u8("não abriu: erro ") + juce::String(static_cast<int>(GetLastError()));
         return 0;
     }
@@ -214,8 +235,21 @@ juce::int64 abrirApp(const EntradaCatalogo& e, const juce::StringArray& extras, 
    #ifdef POSIX_SPAWN_SETSID
     posix_spawnattr_setflags(&at, POSIX_SPAWN_SETSID);
    #endif
+    // Ambiente: o do Maestruc mais as variáveis do catálogo (substituem).
+    std::vector<std::string> ambStore;
+    for (char** p = environ; p != nullptr && *p != nullptr; ++p) {
+        const std::string item(*p);
+        bool trocada = false;
+        for (auto& k : e.ambiente.getAllKeys())
+            if (item.rfind(k.toStdString() + "=", 0) == 0) trocada = true;
+        if (!trocada) ambStore.push_back(item);
+    }
+    for (auto& k : e.ambiente.getAllKeys()) ambStore.push_back((k + "=" + e.ambiente[k]).toStdString());
+    std::vector<char*> envp;
+    for (auto& s : ambStore) envp.push_back(s.data());
+    envp.push_back(nullptr);
     pid_t pid = 0;
-    const int rc = posix_spawn(&pid, argv[0], &fa, &at, argv.data(), environ);
+    const int rc = posix_spawn(&pid, argv[0], &fa, &at, argv.data(), envp.data());
     posix_spawn_file_actions_destroy(&fa);
     posix_spawnattr_destroy(&at);
     if (rc != 0) { erro = u8("não abriu: ") + juce::String(std::strerror(rc)); return 0; }

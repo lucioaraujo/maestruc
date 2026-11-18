@@ -24,6 +24,10 @@ struct EntradaCatalogo {
     juce::String repositorio;   // lucioaraujo/… (releases oficiais); vazio = não publicado
     juce::String pagina;        // página oficial (como instalar)
     juce::StringArray argsFixos;
+    // Variáveis de ambiente ao abrir (18/11/2026): o Rasgo Modular 0.1.11 só
+    // liga o canal por RASGO_MAESTRUC=1, não por --maestruc. Só nomes que
+    // terminam em _MAESTRUC (um catálogo não injeta outras variáveis).
+    juce::StringPairArray ambiente;
     juce::String padraoSom;     // expressão do JACK para achar as saídas de áudio
     juce::String abertura;      // "batruc": --abrir/--seed hex; "modular": seed decimal posicional;
                                 // "seed": --seed decimal; "navalha": --abrir projeto; "" = nada
@@ -59,6 +63,25 @@ inline juce::StringArray textos(const juce::var& lista) {
     juce::StringArray s;
     if (auto* a = lista.getArray())
         for (auto& x : *a) if (x.isString()) s.add(x.toString());
+    return s;
+}
+
+// Nome aceito no "ambiente" do catálogo: maiúsculas, algarismos e _, e
+// terminando em _MAESTRUC.
+inline bool nomeDeAmbienteValido(const juce::String& n) {
+    return n.length() > 9 && n.endsWith("_MAESTRUC") && n.containsOnly("ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_")
+        && !n.startsWithChar('_');
+}
+
+inline juce::StringPairArray ambiente(const juce::var& obj) {
+    juce::StringPairArray s;
+    if (auto* o = obj.getDynamicObject())
+        for (auto& p : o->getProperties()) {
+            const auto nome = p.name.toString();
+            const auto valor = p.value.toString();
+            if (nomeDeAmbienteValido(nome) && p.value.isString() && valor.length() <= 64 && !valor.containsChar(0))
+                s.set(nome, valor);
+        }
     return s;
 }
 
@@ -172,6 +195,7 @@ inline EntradaCatalogo entrada(const juce::var& x, Fonte fonte) {
     e.repositorio = x.getProperty("repositorio", {}).toString();
     e.pagina = x.getProperty("pagina", {}).toString();
     e.argsFixos = textos(x.getProperty("args", {}));
+    e.ambiente = ambiente(x.getProperty("ambiente", {}));
     e.padraoSom = x.getProperty("padraoSom", {}).toString();
     e.abertura = x.getProperty("abertura", {}).toString();
     e.nota = x.getProperty("nota", {}).toString();

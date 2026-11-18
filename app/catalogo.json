@@ -34,7 +34,7 @@
       "id": "rasgo-modular", "nome": "Rasgo Modular", "grupo": "A",
       "repositorio": "lucioaraujo/rasgo-modular",
       "pagina": "https://lucioaraujo.github.io/rasgo-modular/",
-      "args": ["--maestruc"], "abertura": "modular",
+      "args": ["--maestruc"], "ambiente": { "RASGO_MAESTRUC": "1" }, "abertura": "modular",
       "nota": "seed (também aberto), tocar/repouso",
       "padraoSom": "Modular",
       "instalado": {
