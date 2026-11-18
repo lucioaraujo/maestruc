@@ -384,6 +384,31 @@ public:
         setLookAndFeel(nullptr);
     }
 
+    // A logo do Maestruc (assets/identidade, variação R4 do autor) desenhada em
+    // vetor: as mesmas curvas do SVG, sem o quadrado de fundo nem o contorno.
+    static void desenharLogo(juce::Graphics& g, juce::Rectangle<float> area) {
+        // caixa das curvas no SVG 1024: x 230..818, y 232..792
+        const float x0 = 230.0f, y0 = 232.0f, w = 588.0f, h = 560.0f;
+        const float k = juce::jmin(area.getWidth() / w, area.getHeight() / h);
+        const float ox = area.getX() + (area.getWidth() - w * k) * 0.5f;
+        const float oy = area.getY() + (area.getHeight() - h * k) * 0.5f;
+        auto P = [&](float x, float y) { return juce::Point<float>(ox + (x - x0) * k, oy + (y - y0) * k); };
+        const float opac[] = { 0.61f, 0.59f, 0.58f, 0.56f, 0.56f, 0.58f, 0.59f, 0.61f };
+        const float traco = juce::jmax(1.4f, 22.0f * k);
+        for (int i = 0; i < 8; ++i) {
+            const float y = 232.0f + 80.0f * static_cast<float>(i);
+            juce::Path p;
+            p.startNewSubPath(P(230.0f, y));
+            p.cubicTo(P(480.0f, y), P(560.0f, 512.0f), P(760.0f, 512.0f));
+            g.setColour(cor::teal.withAlpha(opac[i]));
+            g.strokePath(p, juce::PathStrokeType(traco, juce::PathStrokeType::curved, juce::PathStrokeType::rounded));
+        }
+        const auto c = P(760.0f, 512.0f);
+        const float r = 58.0f * k;
+        g.setColour(cor::vermelho);
+        g.fillEllipse(c.x - r, c.y - r, 2.0f * r, 2.0f * r);
+    }
+
     void paint(juce::Graphics& g) override {
         g.fillAll(cor::fundo);
         // Cabeçalho.
@@ -391,12 +416,15 @@ public:
         g.fillRect(0, 0, kW, 72);
         g.setColour(cor::borda);
         g.drawHorizontalLine(71, 0.0f, static_cast<float>(kW));
+        // Logo ao lado do título (autor, 18/11/2026): a R4 sem contorno nem
+        // fundo, as oito linhas que se juntam no Master.
+        desenharLogo(g, { 24.0f, 12.0f, 48.0f, 48.0f });   // como o Navalha: à esquerda, quase a altura do cabeçalho
         g.setColour(cor::tinta);
         g.setFont(letra::forte(26.0f).withExtraKerningFactor(0.06f));
-        g.drawText("MAESTRUC", 24, 18, 170, 36, juce::Justification::centredLeft);
+        g.drawText("MAESTRUC", 84, 18, 120, 36, juce::Justification::centredLeft);
         g.setColour(cor::apagado);
         g.setFont(letra::sans(13.0f));
-        g.drawFittedText(T("família RASGO tocando junto"), 192, 26, 200, 24, juce::Justification::centredLeft, 1, 0.8f);
+        g.drawFittedText(T("família RASGO tocando junto"), 212, 26, 184, 24, juce::Justification::centredLeft, 1, 0.8f);
         g.setColour(cor::borda);
         g.drawVerticalLine(404, 16.0f, 56.0f);
         g.setColour(cor::apagado);
