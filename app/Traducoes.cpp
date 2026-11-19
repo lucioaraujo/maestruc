@@ -93,6 +93,8 @@ const std::unordered_map<std::string, std::array<const char*, 3>>& tabelaTraduco
         { "memória", { "memory", "memoria", "mémoire" } },
         { "GB livres", { "GB free", "GB libres", "Go libres" } },
         { "atrasos", { "dropouts", "retrasos", "décrochages" } },
+        { "apps", { "apps", "apps", "apps" } },
+        { "sistema todo", { "whole system", "todo el sistema", "tout le système" } },
         { "NORMAL", { "NORMAL", "NORMAL", "NORMAL" } },
         { "ECONÔMICO", { "ECONOMY", "ECONÓMICO", "ÉCONOMIQUE" } },
         { "MÍNIMO", { "MINIMUM", "MÍNIMO", "MINIMUM" } },

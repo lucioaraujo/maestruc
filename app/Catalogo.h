@@ -19,7 +19,8 @@ enum class Fonte { Instalados, Desenvolvimento };
 
 struct EntradaCatalogo {
     juce::String id;            // identificador estável (o catálogo do usuário substitui por ele)
-    juce::String nome;          // como aparece na janela e no hello do receptor
+    juce::String nome;          // como o app se anuncia no hello do receptor (chave)
+    juce::String rotulo;        // como aparece na janela (19/11/2026); vazio no catálogo = nome
     juce::String grupo;         // A síntese, B composição ao vivo, C composição
     juce::String repositorio;   // lucioaraujo/… (releases oficiais); vazio = não publicado
     juce::String pagina;        // página oficial (como instalar)
@@ -191,6 +192,7 @@ inline EntradaCatalogo entrada(const juce::var& x, Fonte fonte) {
     EntradaCatalogo e;
     e.id = x.getProperty("id", {}).toString();
     e.nome = x.getProperty("nome", {}).toString();
+    e.rotulo = x.getProperty("rotulo", e.nome).toString();
     e.grupo = x.getProperty("grupo", {}).toString();
     e.repositorio = x.getProperty("repositorio", {}).toString();
     e.pagina = x.getProperty("pagina", {}).toString();

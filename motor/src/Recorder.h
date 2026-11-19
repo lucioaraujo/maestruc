@@ -57,6 +57,9 @@ private:
     std::vector<std::unique_ptr<Ring>> rings_;
     std::vector<std::unique_ptr<WavWriter>> writers_;
     std::vector<float> scratch_;
+    // Teto suave só nos stems (o master já passa pelo limitador): abaixo de
+    // −1 dBFS nada muda; acima, curva até 0 dBFS em vez de cortar seco.
+    std::vector<bool> teto_;
     std::thread thread_;
     std::atomic<bool> running_ { false };
     std::atomic<bool> stopRequested_ { false };

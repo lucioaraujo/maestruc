@@ -30,6 +30,12 @@ Windows (installer and .zip) and macOS (.dmg, Universal 2).
   gravações em `Música/RASGO/Maestruc/recordings/<dia>/<take>/`, pela
   convenção de pastas adotada pela família (folders-ref 1.0). Nomes sem
   espaços nem acentos (`master-streaming.wav`, `log.json`).
+- **Máquina:** a barra mostra os núcleos dos apps e, mais clara, a CPU do
+  sistema inteiro; o aviso "Sem folga" conta o sistema inteiro.
+- **Stems sem corte seco:** quando uma influência sobe um stem acima de
+  −1 dBFS, a gravação dele curva suavemente até 0 dBFS em vez de cortar
+  (o Master continua no limitador).
+- O Rasgo Synth Studio aparece como "Synth Studio" na janela.
 - Português, inglês, espanhol e francês.
 - Pacotes: `.deb`, AppImage e `.tar.gz` (Linux), instalador e `.zip`
   (Windows), `.dmg` Universal 2 com assinatura ad-hoc (macOS).

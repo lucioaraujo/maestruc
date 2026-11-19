@@ -43,6 +43,10 @@ void fecharApp(Processo& p);
 
 double memoriaLivreGb();
 
+// CPU do sistema inteiro (Maestruc, apps e o resto: Xorg, navegador…), em
+// núcleos. Mede no máximo a cada 0,5 s; antes da 2ª medida devolve 0.
+double cpuSistema();
+
 // Pasta dos logs dos apps abertos pelo Maestruc: na pasta de dados do
 // usuário (até 18/11/2026 ficava no código-fonte, que não existe numa
 // instalação).

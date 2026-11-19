@@ -235,7 +235,7 @@ public:
             c->onAcao = [this, i] { acaoApp(i); };
             auto* l = regencia_.add(new LinhaRegencia());
             addChildComponent(l);
-            l->nome = a.e.nome;
+            l->nome = a.e.rotulo;
             l->seed.setText(prefs_->getValue("seed_" + a.e.nome), juce::dontSendNotification);
             l->peca = prefs_->getValue("peca_" + a.e.nome);
             l->seed.onTextChange = [this, i] { prefs_->setValue("seed_" + apps_[(size_t) i].e.nome, regencia_[i]->seed.getText().trim()); };
@@ -245,7 +245,7 @@ public:
             l->onTocar = [this, i] { if (auto* inst = instDe(i)) orq_.enviar(inst->porta, "transport/play", juce::String("0")); };
             auto* mx = mixers_.add(new MixerDoApp());
             addChildComponent(mx);
-            auto* esc = escolhaMixer_.add(new juce::TextButton(a.e.nome.toUpperCase()));
+            auto* esc = escolhaMixer_.add(new juce::TextButton(a.e.rotulo.toUpperCase()));
             addChildComponent(esc);
             estiloBotao(*esc, cor::painel, cor::tinta, cor::bordaControle);
             esc->setColour(juce::TextButton::buttonOnColourId, cor::doGrupo(a.corIdx));
@@ -820,7 +820,7 @@ private:
                 }
             }
             cartoes_[static_cast<int>(i)]->setVersaoNova(botaoVersao);
-            cartoes_[static_cast<int>(i)]->set(a.e.nome, estado, tom, detalhe, acao, cpu, aberto && a.ligado);
+            cartoes_[static_cast<int>(i)]->set(a.e.rotulo, estado, tom, detalhe, acao, cpu, aberto && a.ligado);
         }
         repaint(areaApps_);
     }
@@ -869,7 +869,7 @@ private:
             const juce::String nota = temMixer ? juce::String()
                 : inst->tem("mixer") ? T("esperando a lista do mixer do app")
                 : T("este app não oferece o mixer dele ao Maestruc");
-            m->setApp(apps_[i].e.nome, cor::doGrupo(apps_[i].corIdx), temMixer ? inst : nullptr, nota);
+            m->setApp(apps_[i].e.rotulo, cor::doGrupo(apps_[i].corIdx), temMixer ? inst : nullptr, nota);
         }
         posicionarMixers();
         if (pagina_ == 1) repaint(areaPagina_);
@@ -922,6 +922,11 @@ private:
         y += 24;
         g.setColour(cor::trilho);
         g.fillRoundedRectangle(static_cast<float>(x), static_cast<float>(y), static_cast<float>(w), 12.0f, 6.0f);
+        // Embaixo, mais clara, a CPU do sistema inteiro (19/11/2026, pedido do
+        // autor): com 8 apps a barra marcava 2,3 núcleos e o sistema ~90%.
+        const double sistema = juce::jmax(soma, cpuSistema());
+        g.setColour(cor::teal.withAlpha(0.35f));
+        g.fillRoundedRectangle(static_cast<float>(x), static_cast<float>(y), static_cast<float>(w * juce::jlimit(0.0, 1.0, sistema / nucleos)), 12.0f, 6.0f);
         g.setColour(cor::teal);
         g.fillRoundedRectangle(static_cast<float>(x), static_cast<float>(y), static_cast<float>(w * juce::jlimit(0.0, 1.0, soma / nucleos)), 12.0f, 6.0f);
         g.setColour(cor::ocre);
@@ -931,7 +936,17 @@ private:
         g.setFont(letra::sans(12.0f));
         g.drawText(T("memória") + " " + virgula(memoriaLivreGb(), 1) + " " + T("GB livres"), x, y, 220, 16, juce::Justification::centredLeft);
         g.drawText(T("atrasos") + " " + juce::String(atrasos), x + 200, y, w - 200, 16, juce::Justification::centredRight);
-        const bool cabe = soma + 1.0 < 0.7 * nucleos && atrasos == 0;
+        y += 20;
+        g.setColour(cor::teal);
+        g.fillRect(x, y + 4, 9, 9);
+        g.setColour(cor::tinta2);
+        g.drawText(T("apps") + " " + virgula(soma, 2), x + 14, y, 120, 16, juce::Justification::centredLeft);
+        g.setColour(cor::teal.withAlpha(0.35f));
+        g.fillRect(x + 130, y + 4, 9, 9);
+        g.setColour(cor::tinta2);
+        g.drawText(T("sistema todo") + " " + virgula(sistema, 2), x + 144, y, w - 144, 16, juce::Justification::centredLeft);
+        // A folga conta o sistema inteiro: os apps não são os únicos a pesar.
+        const bool cabe = sistema + 1.0 < 0.7 * nucleos && atrasos == 0;
         g.setColour(cabe ? cor::tealEscuro : cor::vermelhoTexto);
         g.drawFittedText(cabe ? T("Cabe mais um app.") : T("Sem folga: use o orçamento econômico ou feche um app."),
                          x, areaApps_.getBottom() - 32, w, 22, juce::Justification::centredLeft, 2, 0.8f);
@@ -953,7 +968,7 @@ private:
         juce::StringArray nomes;
         for (int s = 0; s < n; ++s) {
             auto* app = appDoStem(s);
-            const auto nome = app ? app->e.nome : juce::String(host_.stems()[(size_t) s]);
+            const auto nome = app ? app->e.rotulo : juce::String(host_.stems()[(size_t) s]);
             nomes.add(nome);
             auto* f = faixas_.add(new Faixa(Faixa::Stem));
             addAndMakeVisible(f);
@@ -1136,7 +1151,7 @@ private:
         for (int s = 0; s < static_cast<int>(host_.stems().size()); ++s) {
             const auto& m = host_.mixer().stripMeter(s);
             auto* app = appDoStem(s);
-            linha(app ? app->e.nome : juce::String(host_.stems()[(size_t) s]), nivelDeRms(m.rms.load()), dbDe(m.rms.load()), false);
+            linha(app ? app->e.rotulo : juce::String(host_.stems()[(size_t) s]), nivelDeRms(m.rms.load()), dbDe(m.rms.load()), false);
         }
         const auto& fm = host_.mixer().fonesMeter();
         linha(T("Fones"), nivelDeRms(fm.rms.load()), T("não grava"), true);

@@ -108,7 +108,7 @@
       "desenvolvimento": { "comando": "TRIOIO/.local-build/app/trioio_app_artefacts/Release/Trioio", "processo": "Release/Trioio" }
     },
     {
-      "id": "rasgo-synth-studio", "nome": "Studio", "grupo": "C",
+      "id": "rasgo-synth-studio", "nome": "Studio", "rotulo": "Synth Studio", "grupo": "C",
       "repositorio": "lucioaraujo/rasgo-synth-studio",
       "pagina": "https://lucioaraujo.github.io/rasgo-synth-studio/",
       "args": ["--maestruc"], "abertura": "seed",

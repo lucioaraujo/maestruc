@@ -54,7 +54,24 @@ void registrarCpu(Processo& p, juce::uint64 ns) {
     p.cpuNs = ns;
     p.medidoEm = agora;
 }
+
+// Ocupado e total acumulados do sistema (unidades do próprio sistema); a
+// fração ocupada entre duas medidas vezes os núcleos dá núcleos em uso.
+bool temposSistema(juce::uint64& ocupado, juce::uint64& total);
 } // namespace
+
+double cpuSistema() {
+    static juce::uint64 ocupado0 = 0, total0 = 0;
+    static double em = 0.0, valor = 0.0;
+    const double t = agoraS();
+    if (em > 0.0 && t - em < 0.5) return valor;
+    juce::uint64 ocupado = 0, total = 0;
+    if (!temposSistema(ocupado, total)) return valor;
+    if (em > 0.0 && total > total0 && ocupado >= ocupado0)
+        valor = static_cast<double>(ocupado - ocupado0) / static_cast<double>(total - total0) * juce::SystemStats::getNumCpus();
+    ocupado0 = ocupado; total0 = total; em = t;
+    return valor;
+}
 
 #if JUCE_WINDOWS
 
@@ -185,6 +202,17 @@ void medirCpu(Processo& p) {
 void fecharApp(Processo& p) {
     if (p.pid > 0) EnumWindows(fecharJanela, static_cast<LPARAM>(p.pid));
 }
+
+namespace {
+bool temposSistema(juce::uint64& ocupado, juce::uint64& total) {
+    FILETIME ocioso, nucleo, usuario;   // o tempo de núcleo inclui o ocioso
+    if (!GetSystemTimes(&ocioso, &nucleo, &usuario)) return false;
+    const auto v = [](FILETIME f) { return (static_cast<juce::uint64>(f.dwHighDateTime) << 32) | f.dwLowDateTime; };
+    total = v(nucleo) + v(usuario);
+    ocupado = total - juce::jmin(total, v(ocioso));
+    return true;
+}
+} // namespace
 
 double memoriaLivreGb() {
     MEMORYSTATUSEX m {};
@@ -325,6 +353,20 @@ void medirCpu(Processo& p) {
     registrarCpu(p, ticks * 1000000000ULL / static_cast<juce::uint64>(sysconf(_SC_CLK_TCK)));
 }
 
+namespace {
+bool temposSistema(juce::uint64& ocupado, juce::uint64& total) {
+    // 1ª linha de /proc/stat: user nice system idle iowait irq softirq steal
+    const auto linha = juce::File("/proc/stat").loadFileAsString().upToFirstOccurrenceOf("\n", false, false);
+    const auto c = juce::StringArray::fromTokens(linha, " ", "");
+    if (c.size() < 6 || c[0] != "cpu") return false;
+    total = 0;
+    for (int i = 1; i < juce::jmin(c.size(), 9); ++i) total += static_cast<juce::uint64>(c[i].getLargeIntValue());
+    const auto ocioso = static_cast<juce::uint64>(c[4].getLargeIntValue() + c[5].getLargeIntValue());
+    ocupado = total - juce::jmin(total, ocioso);
+    return true;
+}
+} // namespace
+
 double memoriaLivreGb() {
     const auto info = juce::File("/proc/meminfo").loadFileAsString();
     const auto linha = info.fromFirstOccurrenceOf("MemAvailable:", false, false).upToFirstOccurrenceOf("\n", false, false);
@@ -365,6 +407,17 @@ void medirCpu(Processo& p) {
     const auto ticks = static_cast<juce::uint64>(ti.pti_total_user + ti.pti_total_system);
     registrarCpu(p, base.denom != 0 ? ticks * base.numer / base.denom : ticks);
 }
+
+namespace {
+bool temposSistema(juce::uint64& ocupado, juce::uint64& total) {
+    host_cpu_load_info_data_t c {};
+    mach_msg_type_number_t n = HOST_CPU_LOAD_INFO_COUNT;
+    if (host_statistics(mach_host_self(), HOST_CPU_LOAD_INFO, reinterpret_cast<host_info_t>(&c), &n) != KERN_SUCCESS) return false;
+    ocupado = static_cast<juce::uint64>(c.cpu_ticks[CPU_STATE_USER]) + c.cpu_ticks[CPU_STATE_SYSTEM] + c.cpu_ticks[CPU_STATE_NICE];
+    total = ocupado + c.cpu_ticks[CPU_STATE_IDLE];
+    return true;
+}
+} // namespace
 
 double memoriaLivreGb() {
     vm_statistics64_data_t vm {};

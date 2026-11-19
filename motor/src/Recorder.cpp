@@ -2,6 +2,8 @@
 // Copyright (c) 2026 Lúcio de Araújo — AGPL-3.0-or-later.
 #include "Recorder.h"
 
+#include <cmath>
+
 #include <algorithm>
 #include <chrono>
 #include <filesystem>
@@ -41,6 +43,21 @@ std::size_t Ring::read(float* dst, std::size_t maxFloats) {
     return n;
 }
 
+namespace {
+// Transparente até −1 dBFS; acima, tanh até 0 dBFS (contínua e com derivada 1
+// no joelho). Evita o corte seco do PCM 24 quando uma influência sobe o stem.
+void tetoSuave(float* x, std::size_t n) {
+    constexpr float joelho = 0.891251f;          // −1 dBFS
+    constexpr float folga = 0.999f - joelho;
+    for (std::size_t i = 0; i < n; ++i) {
+        const float a = std::fabs(x[i]);
+        if (a <= joelho) continue;
+        const float y = joelho + folga * std::tanh((a - joelho) / folga);
+        x[i] = x[i] < 0.0f ? -y : y;
+    }
+}
+} // namespace
+
 bool Recorder::start(const std::string& dir, const std::vector<std::string>& trackNames,
                      int sampleRate, double ringSeconds, std::string& error, bool blocking) {
     stop();
@@ -54,12 +71,14 @@ bool Recorder::start(const std::string& dir, const std::vector<std::string>& tra
     if (!ec && space.available < (1ull << 30)) { error = "menos de 1 GB livre em " + dir; return false; }
     rings_.clear();
     writers_.clear();
+    teto_.clear();
     const auto cap = static_cast<std::size_t>(std::max(0.25, ringSeconds) * sampleRate * 2);
     for (const auto& name : trackNames) {
         auto w = std::make_unique<WavWriter>();
         const std::string path = (fs::path(dir) / (name + ".wav")).string();
         if (!w->open(path, sampleRate)) { error = "não grava " + path; writers_.clear(); return false; }
         writers_.push_back(std::move(w));
+        teto_.push_back(name != "master");
         rings_.push_back(std::make_unique<Ring>(cap));
     }
     scratch_.assign(16384, 0.0f);
@@ -93,6 +112,7 @@ bool Recorder::drain() {
         std::size_t n;
         while ((n = rings_[t]->read(scratch_.data(), scratch_.size())) > 0) {
             any = true;
+            if (teto_[t]) tetoSuave(scratch_.data(), n);
             if (!writers_[t]->writeInterleaved(scratch_.data(), n / 2)) writeError_ = true;
         }
     }
