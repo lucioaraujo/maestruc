@@ -1,6 +1,6 @@
 # Maestruc — notas de versão / changelog
 
-## 0.1.0 — em preparação
+## 0.1.0 — 19 nov. 2026
 
 *English:* first release. Maestruc opens the RASGO instruments installed on
 the computer and makes them play together: one strip per instrument, mixer,

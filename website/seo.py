@@ -9,13 +9,13 @@ SITE = {
     "base": "https://lucioaraujo.github.io/maestruc/",
     "nome": "Maestruc",
     # 1200×630, derivada de assets/interface.jpg (captura da janela do app
-    # instalado, com Batruc, Aquorbium e Rasgo Modular tocando, 18/11/2026)
+    # instalado, os 8 instrumentos tocando, 19/11/2026; caminho pessoal coberto)
     "imagem": "assets/og-maestruc.jpg",
     "imagem_alt": {
-        "pt-BR": "Maestruc tocando Batruc, Aquorbium e Rasgo Modular: os cartões dos apps, as faixas de saída com o Master e a matriz de influências.",
-        "en": "Maestruc playing Batruc, Aquorbium and Rasgo Modular: the app cards, the output strips with the Master and the influence matrix.",
-        "fr": "Maestruc jouant Batruc, Aquorbium et Rasgo Modular : les cartes des apps, les tranches de sortie avec le Master et la matrice d'influences.",
-        "es": "Maestruc tocando Batruc, Aquorbium y Rasgo Modular: las tarjetas de las apps, las tiras de salida con el Master y la matriz de influencias.",
+        "pt-BR": "Maestruc com os 8 instrumentos RASGO tocando: os cartões dos apps, as faixas de saída com o Master e a matriz de influências.",
+        "en": "Maestruc with the 8 RASGO instruments playing: the app cards, the output strips with the Master and the influence matrix.",
+        "fr": "Maestruc avec les 8 instruments RASGO en train de jouer : les cartes des apps, les tranches de sortie avec le Master et la matrice d'influences.",
+        "es": "Maestruc con los 8 instrumentos RASGO tocando: las tarjetas de las apps, las tiras de salida con el Master y la matriz de influencias.",
     },
     "raiz_do_dominio": False,
 }

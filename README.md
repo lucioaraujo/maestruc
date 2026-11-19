@@ -9,7 +9,7 @@ strip, is mixed, can influence the others, and is recorded track by track. Each
 instrument keeps running in its own process and interprets what Maestruc asks:
 influence is not control (RASGO Method).
 
-**Version:** 0.1.0 (in preparation, not released yet) · **License:** GNU
+**Version:** 0.1.0 (19 Nov 2026) · **License:** GNU
 AGPL-3.0-or-later ([`LICENSE`](LICENSE))
 
 ## What it does
@@ -91,7 +91,7 @@ cada um chega numa faixa própria, é mixado, pode influenciar os outros e é
 gravado pista a pista. Cada instrumento continua rodando no seu processo e
 interpreta o que o Maestruc pede: influência não é controle (Método RASGO).
 
-**Versão:** 0.1.0 (em preparação, ainda não publicada) · **Licença:** GNU
+**Versão:** 0.1.0 (19 nov. 2026) · **Licença:** GNU
 AGPL-3.0-or-later ([`LICENSE`](LICENSE))
 
 - **Instrumentos:** abre os instrumentos RASGO instalados no computador
@@ -151,7 +151,7 @@ autres et est enregistré piste par piste. Chaque instrument continue de tourner
 dans son propre processus et interprète ce que Maestruc demande : influencer
 n'est pas contrôler (Méthode RASGO).
 
-**Version :** 0.1.0 (en préparation, pas encore publiée) · **Licence :** GNU
+**Version :** 0.1.0 (19 nov. 2026) · **Licence :** GNU
 AGPL-3.0-or-later ([`LICENSE`](LICENSE))
 
 - **Instruments :** ouvre les instruments RASGO installés sur l'ordinateur
@@ -208,7 +208,7 @@ demás y se graba pista a pista. Cada instrumento sigue corriendo en su propio
 proceso e interpreta lo que Maestruc pide: influencia no es control (Método
 RASGO).
 
-**Versión:** 0.1.0 (en preparación, aún no publicada) · **Licencia:** GNU
+**Versión:** 0.1.0 (19 nov. 2026) · **Licencia:** GNU
 AGPL-3.0-or-later ([`LICENSE`](LICENSE))
 
 - **Instrumentos:** abre los instrumentos RASGO instalados en el ordenador

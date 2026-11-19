@@ -1,10 +1,9 @@
 # Maestruc — instalação / installation
 
-> **Estado (18 nov. 2026):** versão 0.1.0 em preparação, ainda não
-> publicada. Os pacotes saem da integração contínua do repositório
-> `lucioaraujo/maestruc`.
-> *English:* version 0.1.0 in preparation, not released yet; packages are
-> built by CI.
+> **Estado (19 nov. 2026):** versão 0.1.0 publicada. Os pacotes estão na
+> [release v0.1.0](https://github.com/lucioaraujo/maestruc/releases/tag/v0.1.0).
+> *English:* version 0.1.0 released; packages on the
+> [v0.1.0 release](https://github.com/lucioaraujo/maestruc/releases/tag/v0.1.0).
 
 O Maestruc não instala instrumentos: ele abre os instrumentos RASGO que já
 estão instalados no computador. Cada instrumento se instala pela sua própria
