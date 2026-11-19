@@ -551,7 +551,7 @@ public:
         for (auto* b : orcamento_) b->setBounds(orc.removeFromLeft(304 / 3));
         posicionarFaixas();
         // Influências: matriz (até 8 apps + Master) e o detalhe ao lado.
-        matriz_.setBounds(areaInf_.getX() + 20, areaInf_.getY() + 44, 112 + (kCapacidade + 1) * 56, kCapacidade * 44 + 32);
+        matriz_.setBounds(areaInf_.getX() + 20, areaInf_.getY() + 44, 112 + (kCapacidade + 1) * 56, kCapacidade * 40 + 32);
         painelInf_ = { matriz_.getRight() + 20, areaInf_.getY() + 44, 0, 340 };
         painelInf_.setRight(areaInf_.getRight() - 20);
         auto p = painelInf_.reduced(16, 14);

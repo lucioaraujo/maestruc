@@ -384,7 +384,7 @@ public:
     }
 
 private:
-    static constexpr int kNome = 112, kLarg = 52, kAlt = 40, kGap = 4, kTopo = 32;
+    static constexpr int kNome = 112, kLarg = 52, kAlt = 36, kGap = 4, kTopo = 32;   // 8 linhas + legenda cabem na área
     juce::Rectangle<int> celula(int l, int c) const { return { kNome + c * (kLarg + kGap), kTopo + l * (kAlt + kGap), kLarg, kAlt }; }
 };
 
