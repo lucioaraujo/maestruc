@@ -21,7 +21,7 @@ NAV = {
 T = {
     "pt-BR": {
         "title": "Maestruc — o regente da família RASGO",
-        "desc": "Maestruc: o regente da família de instrumentos RASGO. Abre os instrumentos instalados e os faz tocar juntos: uma faixa por instrumento, mixagem, influências entre eles, seeds, peças e gravação pista a pista.",
+        "desc": "Maestruc: o regente da família RASGO. Abre os instrumentos instalados e os faz tocar juntos, com mixagem, influências entre eles e gravação pista a pista.",
         "strip": "RASGO — família de instrumentos e pesquisa sonora",
         "skip": "Pular para o conteúdo",
         "langnav": "Idioma",
@@ -73,7 +73,7 @@ T = {
     },
     "en": {
         "title": "Maestruc — the conductor of the RASGO family",
-        "desc": "Maestruc: the conductor of the RASGO family of instruments. It opens the installed instruments and makes them play together: one strip per instrument, mixing, influences between them, seeds, pieces and track-by-track recording.",
+        "desc": "Maestruc: the conductor of the RASGO family. It opens the installed instruments and makes them play together, with mixing, influences and track-by-track recording.",
         "strip": "RASGO — family of instruments and sound research",
         "skip": "Skip to content",
         "langnav": "Language",
@@ -125,7 +125,7 @@ T = {
     },
     "fr": {
         "title": "Maestruc — le chef de la famille RASGO",
-        "desc": "Maestruc : le chef de la famille d'instruments RASGO. Il ouvre les instruments installés et les fait jouer ensemble : une tranche par instrument, mixage, influences entre eux, graines, pièces et enregistrement piste par piste.",
+        "desc": "Maestruc : le chef de la famille RASGO. Il ouvre les instruments installés et les fait jouer ensemble, avec mixage, influences et enregistrement piste par piste.",
         "strip": "RASGO — famille d'instruments et recherche sonore",
         "skip": "Aller au contenu",
         "langnav": "Langue",
@@ -177,7 +177,7 @@ T = {
     },
     "es": {
         "title": "Maestruc — el director de la familia RASGO",
-        "desc": "Maestruc: el director de la familia de instrumentos RASGO. Abre los instrumentos instalados y los hace tocar juntos: una tira por instrumento, mezcla, influencias entre ellos, semillas, piezas y grabación pista a pista.",
+        "desc": "Maestruc: el director de la familia RASGO. Abre los instrumentos instalados y los hace tocar juntos, con mezcla, influencias y grabación pista a pista.",
         "strip": "RASGO — familia de instrumentos e investigación sonora",
         "skip": "Saltar al contenido",
         "langnav": "Idioma",
