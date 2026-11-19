@@ -150,6 +150,8 @@ def documento(lang, titulo, descricao, atual, corpo):
 {noindex}<title>{e(titulo)}</title>
 <meta name="description" content="{a(descricao)}" />
 <link rel="icon" href="assets/maestruc-favicon.svg" type="image/svg+xml" />
+<link rel="icon" href="assets/favicon-32.png" sizes="32x32" type="image/png" />
+<link rel="apple-touch-icon" href="assets/apple-touch-icon.png" />
 <link rel="stylesheet" href="styles.css" />
 <script src="assets/contact.js" defer></script>
 </head>
