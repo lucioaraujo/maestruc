@@ -115,7 +115,9 @@ private:
 class Palco final : public juce::Component, private juce::Timer {
 public:
     static constexpr int kW = 1920, kH = 1080;
-    static constexpr int kCapacidade = 7;   // cabe na largura de SAÍDAS com fones e master
+    // Uma faixa por instrumento do catálogo (19/11/2026: eram 7, e o oitavo
+    // aberto, o Studio, ficava sem faixa e tocava direto nas caixas).
+    static constexpr int kCapacidade = 8;   // cabe na largura de SAÍDAS com fones e master
 
     Palco() {
         setLookAndFeel(&visual_);
@@ -548,8 +550,8 @@ public:
         auto orc = juce::Rectangle<int>(areaApps_.getX() + 18, areaApps_.getBottom() - 72, 304, 36);
         for (auto* b : orcamento_) b->setBounds(orc.removeFromLeft(304 / 3));
         posicionarFaixas();
-        // Influências: matriz (até 7 apps + Master) e o detalhe ao lado.
-        matriz_.setBounds(areaInf_.getX() + 20, areaInf_.getY() + 44, 112 + 8 * 56, 7 * 44 + 32);
+        // Influências: matriz (até 8 apps + Master) e o detalhe ao lado.
+        matriz_.setBounds(areaInf_.getX() + 20, areaInf_.getY() + 44, 112 + (kCapacidade + 1) * 56, kCapacidade * 44 + 32);
         painelInf_ = { matriz_.getRight() + 20, areaInf_.getY() + 44, 0, 340 };
         painelInf_.setRight(areaInf_.getRight() - 20);
         auto p = painelInf_.reduced(16, 14);
@@ -983,7 +985,8 @@ private:
     void posicionarFaixas() {
         int x = areaSaidas_.getX() + 20;
         const int y = areaSaidas_.getY() + 52, h = 420;
-        for (auto* f : faixas_) { f->setBounds(x, y, 104, h); x += 112; }
+        // 8 faixas de 96 (19/11/2026, autor: eram 7 de 104).
+        for (auto* f : faixas_) { f->setBounds(x, y, 96, h); x += 100; }
         master_->setBounds(areaSaidas_.getRight() - 20 - 112, y, 112, h);
         fones_->setBounds(master_->getX() - 14 - 104, y, 104, h);
     }
